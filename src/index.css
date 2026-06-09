@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fontaine-navy: #0A1628;
+  --fontaine-deep-navy: #0F1B29;
+  --fontaine-teal: #1A6B8A;
+  --fontaine-cyan: #7EC8E3;
+  --fontaine-gold: #C9A84C;
+  --fontaine-light-gold: #E3D1B2;
+  --fontaine-cream: #F5F0E8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--fontaine-navy);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--fontaine-teal);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fontaine-cyan);
+}
+
+@layer components {
+  .glass-card {
+    @apply backdrop-blur-md bg-opacity-70 border border-fontaine-cyan/20 rounded-xl;
+    background-color: rgba(15, 27, 41, 0.7);
+  }
+
+  .gold-border {
+    border-image: linear-gradient(135deg, #C9A84C, #E3D1B2, #C9A84C) 1;
+  }
+
+  .text-shadow-glow {
+    text-shadow: 0 0 20px rgba(126, 200, 227, 0.5), 0 0 40px rgba(126, 200, 227, 0.3);
+  }
+
+  .text-shadow-gold {
+    text-shadow: 0 0 20px rgba(201, 168, 76, 0.5), 0 0 40px rgba(201, 168, 76, 0.3);
+  }
+}
+
+@layer utilities {
+  .fontaine-gradient-bg {
+    background: linear-gradient(135deg, #0A1628 0%, #0F1B29 25%, #1A3A4A 50%, #0F1B29 75%, #0A1628 100%);
+  }
+
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #C9A84C, #E3D1B2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
