@@ -4,12 +4,14 @@ interface OrnateFrameProps {
   children: ReactNode
   className?: string
   variant?: 'gold' | 'cyan'
+  padding?: string
 }
 
 export default function OrnateFrame({
   children,
   className = '',
   variant = 'gold',
+  padding = 'p-6',
 }: OrnateFrameProps) {
   const borderColor =
     variant === 'gold' ? 'stroke-fontaine-gold' : 'stroke-fontaine-cyan'
@@ -52,7 +54,7 @@ export default function OrnateFrame({
         <circle cx="8" cy="92" r="2.5" className={borderColor} fill="currentColor" />
         <circle cx="92" cy="92" r="2.5" className={borderColor} fill="currentColor" />
       </svg>
-      <div className="relative z-10 p-6">{children}</div>
+      <div className={`relative z-10 ${padding}`}>{children}</div>
     </div>
   )
 }

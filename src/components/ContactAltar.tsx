@@ -42,9 +42,9 @@ export default function ContactAltar() {
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <OrnateFrame variant="cyan" className="max-w-2xl mx-auto">
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid md:grid-cols-2 gap-5">
+          <OrnateFrame variant="cyan" className="max-w-2xl mx-auto" padding="p-8 md:p-10">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm text-fontaine-cyan/70 mb-1.5">
                     Nama Traveler
@@ -53,7 +53,7 @@ export default function ContactAltar() {
                     type="text"
                     required
                     placeholder="Your name..."
-                    className="w-full px-4 py-3 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors"
+                    className="w-full px-5 py-4 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors"
                   />
                 </div>
                 <div>
@@ -64,7 +64,7 @@ export default function ContactAltar() {
                     type="email"
                     required
                     placeholder="your@email.com"
-                    className="w-full px-4 py-3 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors"
+                    className="w-full px-5 py-4 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors"
                   />
                 </div>
               </div>
@@ -76,7 +76,7 @@ export default function ContactAltar() {
                 <input
                   type="text"
                   placeholder="Project collaboration, question, etc..."
-                  className="w-full px-4 py-3 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors"
+                  className="w-full px-5 py-4 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors"
                 />
               </div>
 
@@ -88,11 +88,11 @@ export default function ContactAltar() {
                   required
                   rows={5}
                   placeholder="Tulis pesanmu di sini..."
-                  className="w-full px-4 py-3 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors resize-none"
+                  className="w-full px-5 py-4 rounded-lg bg-fontaine-navy/60 border border-fontaine-cyan/20 text-fontaine-cream placeholder-fontaine-cream/30 text-sm focus:outline-none focus:border-fontaine-cyan/50 transition-colors resize-none"
                 />
               </div>
 
-              <div className="text-center pt-2">
+              <div className="text-center pt-4">
                 <WishButton type="submit" variant="gold">
                   {sent ? '✦ Wish Granted!' : '✦ Kirim Wish'}
                 </WishButton>
