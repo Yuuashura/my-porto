@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { animate, stagger } from 'animejs'
+import { useEffect, useRef } from 'react'
+import { animate, stagger, onScroll } from 'animejs'
 import WishButton from './UI/WishButton'
 
 interface HeroTeyvatProps {
@@ -8,8 +8,6 @@ interface HeroTeyvatProps {
 
 export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
   const heroRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const [progress, setProgress] = useState(0)
 
   const subtitle = 'Hello, Traveler...'
   const nameFirst = 'Yudistira'
@@ -59,32 +57,26 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
       ease: 'outQuad',
       delay: 1100,
     })
-  }, [])
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!heroRef.current) return
-      const rect = heroRef.current.getBoundingClientRect()
-      const winH = window.innerHeight
-      const heroH = rect.height
+    // 5. Scroll-linked parallax animation using Anime.js onScroll
+    const parallaxAnim = animate('.hero-content', {
+      opacity: [1, 0],
+      y: [0, -50],
+      scale: [1, 0.96],
+      autoplay: false,
+    })
 
-      const visible = Math.max(0, Math.min(rect.bottom, winH) - Math.max(rect.top, 0))
-      const ratio = visible / heroH
+    const scrollObserver = onScroll({
+      target: '.hero-content',
+      enter: 'top top',
+      leave: 'bottom top',
+      sync: true,
+    }).link(parallaxAnim)
 
-      setProgress(Math.max(0, Math.min(1, 1 - ratio)))
+    return () => {
+      scrollObserver.revert()
     }
-
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
-  const heroStyle: React.CSSProperties = {
-    opacity: 1 - progress,
-    filter: `blur(${progress * 5}px)`,
-    transform: `scale(${1 - progress * 0.03}) translateY(${progress * -30}px)`,
-    transition: progress < 0.05 ? 'none' : undefined,
-  }
 
   return (
     <section
@@ -93,9 +85,7 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
       className="relative min-h-screen flex items-center justify-center overflow-hidden fontaine-gradient-bg will-change-transform py-20 lg:py-0"
     >
       <div
-        ref={contentRef}
-        className="relative z-10 w-full max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center will-change-transform"
-        style={heroStyle}
+        className="hero-content relative z-10 w-full max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center will-change-transform"
       >
         <div className="lg:col-span-7 text-center lg:text-left space-y-6">
           <p className="font-mono text-fontaine-cyan text-sm md:text-base tracking-widest h-5 select-none">
@@ -114,7 +104,7 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
                 </span>
               ))}
             </span>
-            <span className="block text-gradient-gold mt-1">
+            <span className="block text-fontaine-light-gold mt-1">
               {nameLast.split('').map((char, index) => (
                 <span key={index} className="hero-char-2 inline-block opacity-0">
                   {char === ' ' ? '\u00A0' : char}
