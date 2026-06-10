@@ -73,8 +73,22 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
       sync: true,
     }).link(parallaxAnim)
 
+    // 6. Scroll-linked bottom fade divider animation
+    const fadeAnim = animate('.hero-bottom-fade', {
+      opacity: [0, 1],
+      autoplay: false,
+    })
+
+    const fadeObserver = onScroll({
+      target: '#hero',
+      enter: 'top top',
+      leave: 'bottom top',
+      sync: true,
+    }).link(fadeAnim)
+
     return () => {
       scrollObserver.revert()
+      fadeObserver.revert()
     }
   }, [])
 
@@ -193,10 +207,9 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
       </div>
 
       <div
-        className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-20"
+        className="hero-bottom-fade absolute inset-x-0 bottom-0 h-32 pointer-events-none z-20 opacity-0"
         style={{
           background: `linear-gradient(to top, #0A1628, transparent)`,
-          opacity: progress * 2,
         }}
       />
     </section>
