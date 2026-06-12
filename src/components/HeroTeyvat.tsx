@@ -78,7 +78,7 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
       opacity: [0, 1],
       autoplay: false,
     })
-
+ 
     const fadeObserver = onScroll({
       target: '#hero',
       enter: 'top top',
