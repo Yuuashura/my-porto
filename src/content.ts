@@ -39,6 +39,7 @@ export interface PortfolioContent {
     heading: string
     introduction: string
     viewGithub: string
+    visitLive: string
     technologiesLabel: string
   }
   experience: {
@@ -105,6 +106,11 @@ export interface PortfolioContent {
     bookingIllustration: string
     examIllustration: string
     scholarshipIllustration: string
+    coffeeIllustration: string
+    coffeeTagline: string
+    coffeeLocation: string
+    coffeePurpose: string
+    exploreCoffee: string
   }
 }
 
@@ -151,6 +157,7 @@ export const content: Record<Language, PortfolioContent> = {
       introduction:
         'Systems shaped around clear user flows, maintainable architecture, and the business problem underneath the code.',
       viewGithub: 'View GitHub',
+      visitLive: 'Visit live site',
       technologiesLabel: 'technologies',
     },
     experience: {
@@ -240,6 +247,11 @@ export const content: Record<Language, PortfolioContent> = {
       bookingIllustration: 'Hotel booking architecture illustration',
       examIllustration: 'Vocabulary exam interface illustration',
       scholarshipIllustration: 'Scholarship administration illustration',
+      coffeeIllustration: 'Muladari Coffee single-page website illustration',
+      coffeeTagline: 'From a Story into a Dream',
+      coffeeLocation: 'Batusangkar',
+      coffeePurpose: 'Coffee · Community · WFC',
+      exploreCoffee: 'Explore the coffee shop',
     },
   },
   id: {
@@ -284,6 +296,7 @@ export const content: Record<Language, PortfolioContent> = {
       introduction:
         'Sistem yang dibentuk melalui alur pengguna yang jelas, arsitektur yang mudah dipelihara, dan pemahaman terhadap masalah bisnis di balik kode.',
       viewGithub: 'Lihat GitHub',
+      visitLive: 'Kunjungi situs',
       technologiesLabel: 'teknologi',
     },
     experience: {
@@ -373,6 +386,11 @@ export const content: Record<Language, PortfolioContent> = {
       bookingIllustration: 'Ilustrasi arsitektur aplikasi pemesanan hotel',
       examIllustration: 'Ilustrasi antarmuka ujian kosakata',
       scholarshipIllustration: 'Ilustrasi administrasi beasiswa',
+      coffeeIllustration: 'Ilustrasi website single-page Muladari Coffee',
+      coffeeTagline: 'Berawal dari Cerita Menjadi Sebuah Cita-Cita',
+      coffeeLocation: 'Batusangkar',
+      coffeePurpose: 'Kopi · Komunitas · WFC',
+      exploreCoffee: 'Jelajahi coffee shop',
     },
   },
 }

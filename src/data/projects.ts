@@ -3,13 +3,13 @@ import type { Language } from '../content'
 type LocalizedText = Record<Language, string>
 
 export interface Project {
-  id: 'booking-hotels' | 'exam-vocabulary' | 'pub-scholarship'
+  id: 'booking-hotels' | 'exam-vocabulary' | 'pub-scholarship' | 'muladari-coffee'
   title: string
   description: LocalizedText
   category: LocalizedText
   year: string
   tech: string[]
-  tone: 'green' | 'blue' | 'coral'
+  tone: 'green' | 'blue' | 'coral' | 'coffee'
   github?: string
   link?: string
   status: 'completed' | 'in-progress' | 'planned'
@@ -48,6 +48,7 @@ const projects: Project[] = [
     tech: ['Next.js', 'TypeScript', 'Assessment workflow', 'Reporting'],
     tone: 'blue',
     status: 'completed',
+    link: 'https://exam-vocabulary.pubpasim.org/',
   },
   {
     id: 'pub-scholarship',
@@ -64,6 +65,24 @@ const projects: Project[] = [
     tech: ['Next.js', 'CRUD', 'Admin dashboard', 'Token system'],
     tone: 'coral',
     status: 'completed',
+    link: 'https://new.pubpasim.org/',
+  },
+  {
+    id: 'muladari-coffee',
+    title: 'Muladari Coffee',
+    description: {
+      en: 'A simple single-page profile for a coffee shop in Batusangkar, presenting its story, premium coffee experience, community-friendly atmosphere, and work-from-café offering.',
+      id: 'Website profil single-page sederhana untuk coffee shop di Batusangkar yang memperkenalkan cerita brand, pengalaman menikmati kopi premium, suasana komunitas, dan fasilitas work from café.',
+    },
+    category: {
+      en: 'Brand profile',
+      id: 'Profil brand',
+    },
+    year: '2026',
+    tech: ['Next.js', 'TypeScript', 'Responsive UI', 'Single-page'],
+    tone: 'coffee',
+    status: 'completed',
+    link: 'https://muladaricoffee.shop/',
   },
 ]
 

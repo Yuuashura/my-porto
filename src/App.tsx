@@ -330,11 +330,21 @@ function App() {
                       </motion.li>
                     ))}
                   </motion.ul>
-                  {project.github && (
-                    <a className="project-link" href={project.github} target="_blank" rel="noreferrer">
-                      {copy.work.viewGithub}
-                      <FiArrowUpRight aria-hidden="true" />
-                    </a>
+                  {(project.github || project.link) && (
+                    <div className="project-actions">
+                      {project.github && (
+                        <a className="project-link" href={project.github} target="_blank" rel="noreferrer">
+                          {copy.work.viewGithub}
+                          <FiArrowUpRight aria-hidden="true" />
+                        </a>
+                      )}
+                      {project.link && (
+                        <a className="project-link" href={project.link} target="_blank" rel="noreferrer">
+                          {copy.work.visitLive}
+                          <FiArrowUpRight aria-hidden="true" />
+                        </a>
+                      )}
+                    </div>
                   )}
                 </Reveal>
 
@@ -627,6 +637,53 @@ function ProjectVisual({
               <p>{copy.answerTemporary}</p>
             </div>
             <div className="exam-note">{copy.correctionReady}</div>
+          </div>
+        </div>
+      </motion.div>
+    )
+  }
+
+  if (type === 'muladari-coffee') {
+    return (
+      <motion.div
+        ref={visualRef}
+        className="project-visual project-visual--coffee"
+        role="img"
+        aria-label={copy.coffeeIllustration}
+        style={{ y: cinematic && !shouldReduceMotion ? parallaxY : 0 }}
+        initial={shouldReduceMotion ? false : { scale: cinematic ? 1.045 : 1.015 }}
+        whileInView={shouldReduceMotion ? undefined : { scale: 1 }}
+        whileHover={cinematic ? { scale: 1.008 } : undefined}
+        viewport={{ once: true, amount: 0.22 }}
+        transition={visualTransition}
+      >
+        <div className="coffee-browser">
+          <div className="coffee-browser-bar">
+            <span />
+            <span />
+            <span />
+            <p>muladaricoffee.shop</p>
+          </div>
+          <div className="coffee-page">
+            <div className="coffee-page-head">
+              <div className="coffee-logo">
+                <img
+                  src="https://muladaricoffee.shop/images/muladari_logo.jpg"
+                  alt=""
+                  loading="lazy"
+                />
+              </div>
+              <span>{copy.coffeeLocation}</span>
+            </div>
+            <div className="coffee-page-copy">
+              <p>Muladari Coffee</p>
+              <h4>{copy.coffeeTagline}</h4>
+              <span>{copy.coffeePurpose}</span>
+            </div>
+            <div className="coffee-page-footer">
+              <span>{copy.exploreCoffee}</span>
+              <FiArrowUpRight aria-hidden="true" />
+            </div>
           </div>
         </div>
       </motion.div>
