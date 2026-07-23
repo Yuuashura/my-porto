@@ -94,7 +94,7 @@ export default function ProjectCard({ project, index }: ProjectCardProps) {
             transition: 'transform 0.2s',
           }}
         >
-          {project.description}
+          {project.description.en}
         </p>
 
         <div
