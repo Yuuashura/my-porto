@@ -180,7 +180,7 @@ export default function WishAnimation({ isOpen, onClose }: WishAnimationProps) {
               
               {/* Portrait image */}
               <img
-                src="/im.jpg"
+                src="/aku.jpg"
                 alt="Yudistira Syaputra"
                 className="w-full h-full object-cover object-top"
               />

@@ -260,7 +260,7 @@ function App() {
             transition={{ duration: cinematic ? 0.86 : 0.54, delay: 0.18, ease: heroEase }}
           >
             <div className="portrait-image-wrap">
-              <img src="/im.jpg" alt="Portrait of Yudistira Syaputra" fetchPriority="high" />
+              <img src="/aku.jpg" alt="Portrait of Yudistira Syaputra" fetchPriority="high" />
               <span className="portrait-sheen" aria-hidden="true" />
             </div>
             <motion.div

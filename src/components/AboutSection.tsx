@@ -99,7 +99,7 @@ export default function AboutSection() {
                 <div className="flex-grow flex items-center justify-center py-4">
                   <div className="w-36 h-36 rounded-full overflow-hidden border-2 border-fontaine-gold shadow-lg shadow-fontaine-gold/10">
                     <img 
-                      src="/im.jpg" 
+                      src="/aku.jpg" 
                       alt="Yudistira Syaputra" 
                       className="w-full h-full object-cover object-top"
                     />

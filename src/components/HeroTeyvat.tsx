@@ -180,7 +180,7 @@ export default function HeroTeyvat({ onExplore }: HeroTeyvatProps) {
               {/* Portrait */}
               <div className="relative flex-grow overflow-hidden bg-gradient-to-b from-fontaine-teal/20 via-fontaine-deep-navy to-fontaine-navy">
                 <img
-                  src="/im.jpg"
+                  src="/aku.jpg"
                   alt="Yudistira Syaputra"
                   className="w-full h-full object-cover object-top scale-102 group-hover:scale-108 transition-transform duration-700 ease-out"
                 />
