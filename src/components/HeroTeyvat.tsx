@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { animate, stagger, onScroll } from 'animejs'
-import WishButton from './UI/WishButton'
+import WishButton from './ui/WishButton'
 
 interface HeroTeyvatProps {
   onExplore?: () => void

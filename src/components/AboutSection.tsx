@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { motion, AnimatePresence } from 'framer-motion'
-import OrnateFrame from './UI/OrnateFrame'
+import OrnateFrame from './ui/OrnateFrame'
 
 const stats = [
   { name: 'Max HP (Backend Solidity)', value: '22,450', percentage: 80, desc: 'Robustness and scalability of server-side architecture (Java & Spring Boot)' },

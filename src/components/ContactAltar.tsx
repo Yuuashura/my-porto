@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import WishButton from './UI/WishButton'
-import OrnateFrame from './UI/OrnateFrame'
+import WishButton from './ui/WishButton'
+import OrnateFrame from './ui/OrnateFrame'
 
 export default function ContactAltar() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 })

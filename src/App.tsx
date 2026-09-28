@@ -1,6 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
+  AnimatePresence,
+  animate,
   motion,
+  useInView,
+  useMotionValue,
   useReducedMotion,
   useScroll,
   useTransform,
@@ -8,6 +12,7 @@ import {
 } from 'framer-motion'
 import {
   FiArrowDown,
+  FiArrowRight,
   FiArrowUpRight,
   FiDownload,
   FiGithub,
@@ -20,12 +25,16 @@ import {
 } from 'react-icons/fi'
 import projects from './data/projects'
 import { Reveal } from './components/MotionSystem'
+import { IntroSplash } from './components/IntroSplash'
+import { INTRO_HERO_DELAY, shouldPlayIntro } from './lib/intro'
+import { LanguageSwitcher } from './components/LanguageSwitcher'
+import { ArchitectureVisual } from './components/ArchitectureVisual'
+import { AnimatedBeam } from './components/ui/animated-beam'
+import { CoverflowCarousel } from './components/ui/coverflow-carousel'
+import { IconCloud } from './components/ui/interactive-icon-cloud'
 import { useDesktopMotion, useSmoothScroll } from './hooks/useMotion'
-import {
-  content,
-  type Language,
-  type PortfolioContent,
-} from './content'
+import { useLanguage } from './hooks/useLanguage'
+import { content, type Language } from './content'
 
 const cvUrl = new URL('../JAVA DEVELOPER - YUDISTIRA SYAPUTRA.pdf', import.meta.url).href
 
@@ -33,6 +42,29 @@ const stackItems = [
   ['Java', 'Spring Boot', 'REST API', 'Microservices', 'OOP'],
   ['MySQL', 'PostgreSQL', 'SQL Server', 'Relational Design'],
   ['React', 'Next.js', 'Node.js', 'TypeScript', 'Git & GitHub'],
+]
+
+// simple-icons v14 slugs (java, microsoftsqlserver, visualstudiocode were removed upstream).
+const iconSlugs = [
+  'openjdk',
+  'spring',
+  'springboot',
+  'react',
+  'nextdotjs',
+  'typescript',
+  'javascript',
+  'nodedotjs',
+  'mysql',
+  'postgresql',
+  'html5',
+  'css3',
+  'tailwindcss',
+  'c',
+  'git',
+  'github',
+  'vercel',
+  'intellijidea',
+  'postman',
 ]
 
 const staggerContainer: Variants = {
@@ -56,15 +88,28 @@ const staggerItem: Variants = {
   },
 }
 
+const wordItem: Variants = {
+  hidden: { y: '105%' },
+  visible: {
+    y: 0,
+    transition: {
+      duration: 0.62,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+}
+
 function App() {
-  const [language, setLanguage] = useState<Language>(() => {
-    const savedLanguage = window.localStorage.getItem('ys-portfolio-language')
-    if (savedLanguage === 'en' || savedLanguage === 'id') return savedLanguage
-    return window.navigator.language.toLowerCase().startsWith('id') ? 'id' : 'en'
-  })
+  const [language, setLanguage] = useLanguage()
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [playIntro] = useState(shouldPlayIntro)
+  const [introVisible, setIntroVisible] = useState(playIntro)
+  const [activeProject, setActiveProject] = useState(0)
   const experienceRef = useRef<HTMLElement>(null)
+  const devTeachRef = useRef<HTMLDivElement>(null)
+  const developmentRef = useRef<HTMLSpanElement>(null)
+  const teachingRef = useRef<HTMLSpanElement>(null)
   const cinematic = useDesktopMotion()
   const shouldReduceMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
@@ -74,6 +119,7 @@ function App() {
   })
   const experienceLineScale = useTransform(experienceProgress, [0, 1], [0, 1])
   const copy = content[language]
+  const project = projects[activeProject]
   const navigation = [
     { label: copy.navigation.work, href: '#work' },
     { label: copy.navigation.experience, href: '#experience' },
@@ -85,8 +131,15 @@ function App() {
     { title: copy.about.stack.data, items: stackItems[1] },
     { title: copy.about.stack.frontend, items: stackItems[2] },
   ]
+  const slides = projects.map((item) => ({
+    alt: item.title,
+    src: item.screenshots[0]?.src,
+    render: item.screenshots.length ? undefined : (
+      <ArchitectureVisual copy={copy.projectVisuals} className="cf-architecture" />
+    ),
+  }))
 
-  useSmoothScroll(menuOpen)
+  useSmoothScroll(menuOpen || introVisible)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -96,22 +149,20 @@ function App() {
   }, [])
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    document.body.style.overflow = menuOpen || introVisible ? 'hidden' : ''
     return () => {
       document.body.style.overflow = ''
     }
-  }, [menuOpen])
+  }, [menuOpen, introVisible])
 
   useEffect(() => {
-    document.documentElement.lang = language
     document.title = copy.meta.title
-    window.localStorage.setItem('ys-portfolio-language', language)
 
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')
     const openGraphDescription = document.querySelector<HTMLMetaElement>('meta[property="og:description"]')
     description?.setAttribute('content', copy.meta.description)
     openGraphDescription?.setAttribute('content', copy.meta.description)
-  }, [copy.meta.description, copy.meta.title, language])
+  }, [copy.meta.description, copy.meta.title])
 
   useLayoutEffect(() => {
     if (!window.location.hash) return
@@ -125,9 +176,15 @@ function App() {
   }
   const heroDistance = cinematic ? 68 : 24
   const heroEase = [0.16, 1, 0.3, 1] as const
+  // Hero waits for the intro curtain to start lifting.
+  const introDelay = playIntro ? INTRO_HERO_DELAY : 0
 
   return (
     <div className="site-shell">
+      <AnimatePresence>
+        {introVisible && <IntroSplash onDone={() => setIntroVisible(false)} />}
+      </AnimatePresence>
+
       <motion.div
         className="scroll-progress"
         style={{ scaleX: shouldReduceMotion ? 0 : scrollYProgress }}
@@ -154,11 +211,7 @@ function App() {
           </nav>
 
           <div className="nav-actions">
-            <LanguageSwitcher
-              language={language}
-              copy={copy}
-              onChange={changeLanguage}
-            />
+            <LanguageSwitcher language={language} copy={copy} onChange={changeLanguage} />
             <a className="nav-cta" href="mailto:tzyudistira@gmail.com">
               {copy.navigation.talk}
               <FiArrowUpRight aria-hidden="true" />
@@ -192,11 +245,7 @@ function App() {
           <div className="mobile-menu-footer">
             <div className="mobile-language-row">
               <span>{copy.language.label}</span>
-              <LanguageSwitcher
-                language={language}
-                copy={copy}
-                onChange={changeLanguage}
-              />
+              <LanguageSwitcher language={language} copy={copy} onChange={changeLanguage} />
             </div>
             <a className="button button--light" href="mailto:tzyudistira@gmail.com" onClick={closeMenu}>
               {copy.navigation.startConversation}
@@ -212,7 +261,7 @@ function App() {
               className="hero-kicker"
               initial={shouldReduceMotion ? false : { x: -heroDistance * 0.5 }}
               animate={{ x: 0 }}
-              transition={{ duration: 0.62, delay: 0.06, ease: heroEase }}
+              transition={{ duration: 0.62, delay: introDelay + 0.06, ease: heroEase }}
             >
               {copy.hero.role} <span aria-hidden="true">/</span> {copy.hero.location}
             </motion.p>
@@ -224,7 +273,7 @@ function App() {
                     animate={{ y: 0, rotate: 0 }}
                     transition={{
                       duration: cinematic ? 0.78 : 0.52,
-                      delay: 0.1 + index * (cinematic ? 0.075 : 0.045),
+                      delay: introDelay + 0.1 + index * (cinematic ? 0.075 : 0.045),
                       ease: heroEase,
                     }}
                   >
@@ -237,7 +286,7 @@ function App() {
               className="hero-intro"
               initial={shouldReduceMotion ? false : { y: cinematic ? 34 : 16 }}
               animate={{ y: 0 }}
-              transition={{ duration: 0.66, delay: cinematic ? 0.42 : 0.24, ease: heroEase }}
+              transition={{ duration: 0.66, delay: introDelay + (cinematic ? 0.42 : 0.24), ease: heroEase }}
             >
               <p>{copy.hero.introduction}</p>
               <div className="hero-actions">
@@ -257,7 +306,7 @@ function App() {
             className="hero-portrait"
             initial={shouldReduceMotion ? false : { scale: cinematic ? 1.075 : 1.025, y: cinematic ? 22 : 10 }}
             animate={{ scale: 1, y: 0 }}
-            transition={{ duration: cinematic ? 0.86 : 0.54, delay: 0.18, ease: heroEase }}
+            transition={{ duration: cinematic ? 0.86 : 0.54, delay: introDelay + 0.18, ease: heroEase }}
           >
             <div className="portrait-image-wrap">
               <img src="/aku.jpg" alt="Portrait of Yudistira Syaputra" fetchPriority="high" />
@@ -267,7 +316,7 @@ function App() {
               className="portrait-caption"
               initial={shouldReduceMotion ? false : { x: cinematic ? -44 : -18 }}
               animate={{ x: 0 }}
-              transition={{ duration: 0.58, delay: cinematic ? 0.52 : 0.3, ease: heroEase }}
+              transition={{ duration: 0.58, delay: introDelay + (cinematic ? 0.52 : 0.3), ease: heroEase }}
             >
               <span>{copy.hero.availability}</span>
               <span className="availability-dot" aria-hidden="true" />
@@ -278,16 +327,19 @@ function App() {
             className="hero-proof"
             initial={shouldReduceMotion ? false : { y: cinematic ? 26 : 12 }}
             animate={{ y: 0 }}
-            transition={{ duration: 0.58, delay: cinematic ? 0.55 : 0.32, ease: heroEase }}
+            transition={{ duration: 0.58, delay: introDelay + (cinematic ? 0.55 : 0.32), ease: heroEase }}
           >
             <p>{copy.hero.buildingWith}</p>
             <motion.div
               aria-label="Core technology stack"
-              variants={staggerContainer}
+              variants={{
+                hidden: {},
+                visible: { transition: { staggerChildren: 0.07, delayChildren: introDelay + 0.08 } },
+              }}
               initial={shouldReduceMotion ? false : 'hidden'}
               animate="visible"
             >
-              {['Java', 'Spring Boot', 'React', 'PostgreSQL'].map((technology) => (
+              {['Java', 'TypeScript', 'React', 'Next.js', 'PostgreSQL'].map((technology) => (
                 <motion.span key={technology} variants={staggerItem}>
                   {technology}
                 </motion.span>
@@ -302,67 +354,114 @@ function App() {
             <p>{copy.work.introduction}</p>
           </Reveal>
 
-          <div className="project-list">
-            {projects.map((project, index) => (
-              <article className={`project project--${project.tone}`} key={project.id}>
-                <Reveal
-                  className="project-copy"
-                  variant={index % 2 === 0 ? 'slide-left' : 'slide-right'}
-                  amount={0.28}
-                >
-                  <div className="project-meta">
-                    <span>{project.category[language]}</span>
-                    <span>{project.year}</span>
-                  </div>
-                  <h3>{project.title}</h3>
-                  <p>{project.description[language]}</p>
-                  <motion.ul
-                    className="project-tech"
-                    aria-label={`${project.title} ${copy.work.technologiesLabel}`}
-                    variants={staggerContainer}
-                    initial={shouldReduceMotion ? false : 'hidden'}
-                    whileInView="visible"
-                    viewport={{ once: true, amount: 0.6 }}
-                  >
-                    {project.tech.map((technology) => (
-                      <motion.li key={technology} variants={staggerItem}>
-                        {technology}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                  {(project.github || project.link) && (
-                    <div className="project-actions">
-                      {project.github && (
-                        <a className="project-link" href={project.github} target="_blank" rel="noreferrer">
-                          {copy.work.viewGithub}
-                          <FiArrowUpRight aria-hidden="true" />
-                        </a>
-                      )}
-                      {project.link && (
-                        <a className="project-link" href={project.link} target="_blank" rel="noreferrer">
-                          {copy.work.visitLive}
-                          <FiArrowUpRight aria-hidden="true" />
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </Reveal>
+          <Reveal variant="scale" amount={0.2}>
+            <CoverflowCarousel
+              slides={slides}
+              label={copy.work.carouselLabel}
+              cardWidth="clamp(260px, 46vw, 640px)"
+              aspectRatio={16 / 10}
+              rotate={38}
+              cardClassName="work-card"
+              showNavigation
+              showPagination
+              onSelect={setActiveProject}
+              onOpen={(index) => window.location.assign(`/projek/${projects[index].id}`)}
+            />
+          </Reveal>
 
-                <ProjectVisual type={project.id} index={index} copy={copy.projectVisuals} />
-              </article>
-            ))}
+          <div className="work-caption" key={project.id} aria-live="polite">
+            <div className="project-meta">
+              <span>{project.category[language]}</span>
+              <span>{project.year}</span>
+            </div>
+            <h3>{project.title}</h3>
+            <p>{project.description[language]}</p>
+            <ul className="project-tech" aria-label={`${project.title} ${copy.work.technologiesLabel}`}>
+              {project.tech.map((technology) => (
+                <li key={technology}>{technology}</li>
+              ))}
+            </ul>
+            <div className="project-actions">
+              <a className="button button--dark" href={`/projek/${project.id}`}>
+                {copy.work.viewDetails}
+                <FiArrowRight aria-hidden="true" />
+              </a>
+              {project.link && (
+                <a className="project-link" href={project.link} target="_blank" rel="noreferrer">
+                  {copy.work.visitLive}
+                  <FiArrowUpRight aria-hidden="true" />
+                </a>
+              )}
+              {project.github && (
+                <a className="project-link" href={project.github} target="_blank" rel="noreferrer">
+                  {copy.work.viewGithub}
+                  <FiArrowUpRight aria-hidden="true" />
+                </a>
+              )}
+            </div>
           </div>
         </section>
 
         <section className="experience-section" id="experience" ref={experienceRef}>
           <Reveal className="experience-intro" variant="slide-left" amount={0.22}>
-            <p className="section-note">{copy.experience.note}</p>
-            <h2>{copy.experience.heading}</h2>
+            <div className="dev-teach" ref={devTeachRef} role="img" aria-label={copy.experience.note}>
+              <span className="dev-teach-pill" ref={developmentRef}>
+                {copy.experience.development}
+              </span>
+              <span className="dev-teach-pill dev-teach-pill--accent" ref={teachingRef}>
+                {copy.experience.teaching}
+              </span>
+              <AnimatedBeam
+                containerRef={devTeachRef}
+                fromRef={developmentRef}
+                toRef={teachingRef}
+                curvature={34}
+                pathColor="#ffffff"
+                pathOpacity={0.18}
+                gradientStartColor="#ff7759"
+                gradientStopColor="#b4e3d7"
+                duration={3.4}
+              />
+              <AnimatedBeam
+                containerRef={devTeachRef}
+                fromRef={developmentRef}
+                toRef={teachingRef}
+                curvature={-34}
+                reverse
+                pathColor="#ffffff"
+                pathOpacity={0.18}
+                gradientStartColor="#b4e3d7"
+                gradientStopColor="#ff7759"
+                duration={3.4}
+                delay={1.7}
+              />
+            </div>
+            <motion.h2
+              aria-label={copy.experience.heading}
+              variants={staggerContainer}
+              initial={shouldReduceMotion ? false : 'hidden'}
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.3 }}
+            >
+              {copy.experience.heading.split(' ').map((word, index) => (
+                <Fragment key={`${word}-${index}`}>
+                  <span className="word-mask" aria-hidden="true">
+                    <motion.span variants={wordItem}>{word}</motion.span>
+                  </span>{' '}
+                </Fragment>
+              ))}
+            </motion.h2>
             <p>{copy.experience.introduction}</p>
             <div className="education-note">
               <span>{copy.experience.education}</span>
               <strong>{copy.experience.degree}</strong>
               <p>{copy.experience.university}</p>
+              <div className="gpa">
+                <CountUp to={3.8} language={language} />
+                <span>
+                  / {(4).toLocaleString(language, { minimumFractionDigits: 2 })} · {copy.experience.gpa}
+                </span>
+              </div>
             </div>
           </Reveal>
 
@@ -374,6 +473,7 @@ function App() {
               {copy.experience.items.map((item, index) => (
                 <motion.li
                   key={`${item.period}-${item.role}`}
+                  style={{ ['--i' as string]: index }}
                   initial={shouldReduceMotion ? false : { x: cinematic ? 38 : 16 }}
                   whileInView={shouldReduceMotion ? undefined : { x: 0 }}
                   viewport={{ once: true, amount: 0.35 }}
@@ -401,35 +501,42 @@ function App() {
             <p>{copy.about.introduction}</p>
           </Reveal>
 
-          <div className="stack-list">
-            {stackGroups.map((group, index) => (
-              <motion.div
-                className="stack-group"
-                key={group.title}
-                initial={shouldReduceMotion ? false : { y: cinematic ? 30 : 14 }}
-                whileInView={shouldReduceMotion ? undefined : { y: 0 }}
-                viewport={{ once: true, amount: 0.55 }}
-                transition={{
-                  duration: cinematic ? 0.58 : 0.4,
-                  delay: Math.min(index * 0.08, 0.16),
-                  ease: heroEase,
-                }}
-              >
-                <h3>{group.title}</h3>
-                <motion.ul
-                  variants={staggerContainer}
-                  initial={shouldReduceMotion ? false : 'hidden'}
-                  whileInView="visible"
-                  viewport={{ once: true, amount: 0.5 }}
+          <div className="skills">
+            <Reveal className="skills-cloud" variant="scale" amount={0.2}>
+              <IconCloud iconSlugs={iconSlugs} />
+            </Reveal>
+
+            <div className="skills-list">
+              <p className="skills-label">{copy.about.skillsLabel}</p>
+              {stackGroups.map((group, index) => (
+                <motion.div
+                  className="stack-group"
+                  key={group.title}
+                  initial={shouldReduceMotion ? false : { y: cinematic ? 30 : 14 }}
+                  whileInView={shouldReduceMotion ? undefined : { y: 0 }}
+                  viewport={{ once: true, amount: 0.55 }}
+                  transition={{
+                    duration: cinematic ? 0.58 : 0.4,
+                    delay: Math.min(index * 0.08, 0.16),
+                    ease: heroEase,
+                  }}
                 >
-                  {group.items.map((item) => (
-                    <motion.li key={item} variants={staggerItem}>
-                      {item}
-                    </motion.li>
-                  ))}
-                </motion.ul>
-              </motion.div>
-            ))}
+                  <h3>{group.title}</h3>
+                  <motion.ul
+                    variants={staggerContainer}
+                    initial={shouldReduceMotion ? false : 'hidden'}
+                    whileInView="visible"
+                    viewport={{ once: true, amount: 0.5 }}
+                  >
+                    {group.items.map((item) => (
+                      <motion.li key={item} variants={staggerItem}>
+                        {item}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
           <Reveal className="principles" variant="scale" amount={0.28}>
@@ -506,241 +613,23 @@ function App() {
   )
 }
 
-function LanguageSwitcher({
-  language,
-  copy,
-  onChange,
-}: {
-  language: Language
-  copy: PortfolioContent
-  onChange: (language: Language) => void
-}) {
-  return (
-    <div className="language-switcher" role="group" aria-label={copy.language.label}>
-      <button
-        type="button"
-        className={language === 'en' ? 'is-active' : ''}
-        aria-label={copy.language.english}
-        aria-pressed={language === 'en'}
-        onClick={() => onChange('en')}
-      >
-        EN
-      </button>
-      <button
-        type="button"
-        className={language === 'id' ? 'is-active' : ''}
-        aria-label={copy.language.indonesian}
-        aria-pressed={language === 'id'}
-        onClick={() => onChange('id')}
-      >
-        ID
-      </button>
-    </div>
-  )
-}
-
-function ProjectVisual({
-  type,
-  index,
-  copy,
-}: {
-  type: string
-  index: number
-  copy: PortfolioContent['projectVisuals']
-}) {
-  const visualRef = useRef<HTMLDivElement>(null)
-  const cinematic = useDesktopMotion()
+/** Counts up to `to` the first time it scrolls into view. */
+function CountUp({ to, language }: { to: number; language: Language }) {
+  const ref = useRef<HTMLElement>(null)
+  const inView = useInView(ref, { once: true, amount: 0.8 })
   const shouldReduceMotion = useReducedMotion()
-  const { scrollYProgress } = useScroll({
-    target: visualRef,
-    offset: ['start end', 'end start'],
-  })
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ['6%', '-6%'])
-  const visualTransition = {
-    duration: cinematic ? 0.72 : 0.46,
-    ease: [0.16, 1, 0.3, 1] as const,
-  }
-
-  if (type === 'booking-hotels') {
-    return (
-      <motion.div
-        ref={visualRef}
-        className="project-visual project-visual--architecture"
-        role="img"
-        aria-label={copy.bookingIllustration}
-        style={{ y: cinematic && !shouldReduceMotion ? parallaxY : 0 }}
-        initial={shouldReduceMotion ? false : { scale: cinematic ? 1.045 : 1.015 }}
-        whileInView={shouldReduceMotion ? undefined : { scale: 1 }}
-        whileHover={cinematic ? { scale: 1.008 } : undefined}
-        viewport={{ once: true, amount: 0.22 }}
-        transition={visualTransition}
-      >
-        <div className="architecture-title">
-          <span>{copy.bookingFlow}</span>
-          <span>{copy.microservices}</span>
-        </div>
-        <div className="service-flow">
-          <div className="service-node service-node--primary">{copy.reactClient}</div>
-          <span aria-hidden="true">→</span>
-          <div className="service-node">{copy.apiGateway}</div>
-          <span aria-hidden="true">→</span>
-          <div className="service-stack">
-            <span>{copy.auth}</span>
-            <span>{copy.hotels}</span>
-            <span>{copy.booking}</span>
-          </div>
-        </div>
-        <div className="architecture-footer">
-          <span>{copy.jwt}</span>
-          <span>{copy.persistence}</span>
-        </div>
-      </motion.div>
-    )
-  }
-
-  if (type === 'exam-vocabulary') {
-    return (
-      <motion.div
-        ref={visualRef}
-        className="project-visual project-visual--exam"
-        role="img"
-        aria-label={copy.examIllustration}
-        style={{ y: cinematic && !shouldReduceMotion ? parallaxY : 0 }}
-        initial={shouldReduceMotion ? false : { scale: cinematic ? 1.045 : 1.015 }}
-        whileInView={shouldReduceMotion ? undefined : { scale: 1 }}
-        whileHover={cinematic ? { scale: 1.008 } : undefined}
-        viewport={{ once: true, amount: 0.22 }}
-        transition={visualTransition}
-      >
-        <div className="exam-window">
-          <div className="window-bar">
-            <span />
-            <span />
-            <span />
-            <p>{copy.assessment}</p>
-          </div>
-          <div className="exam-body">
-            <div className="exam-progress">
-              <span>{copy.question}</span>
-              <i>
-                <b />
-              </i>
-            </div>
-            <h4>{copy.chooseMeaning}</h4>
-            <div className="answer-row answer-row--selected">
-              <span>A</span>
-              <p>{copy.answerAccurate}</p>
-              <b>{copy.selected}</b>
-            </div>
-            <div className="answer-row">
-              <span>B</span>
-              <p>{copy.answerTemporary}</p>
-            </div>
-            <div className="exam-note">{copy.correctionReady}</div>
-          </div>
-        </div>
-      </motion.div>
-    )
-  }
-
-  if (type === 'muladari-coffee') {
-    return (
-      <motion.div
-        ref={visualRef}
-        className="project-visual project-visual--coffee"
-        role="img"
-        aria-label={copy.coffeeIllustration}
-        style={{ y: cinematic && !shouldReduceMotion ? parallaxY : 0 }}
-        initial={shouldReduceMotion ? false : { scale: cinematic ? 1.045 : 1.015 }}
-        whileInView={shouldReduceMotion ? undefined : { scale: 1 }}
-        whileHover={cinematic ? { scale: 1.008 } : undefined}
-        viewport={{ once: true, amount: 0.22 }}
-        transition={visualTransition}
-      >
-        <div className="coffee-browser">
-          <div className="coffee-browser-bar">
-            <span />
-            <span />
-            <span />
-            <p>muladaricoffee.shop</p>
-          </div>
-          <div className="coffee-page">
-            <div className="coffee-page-head">
-              <div className="coffee-logo">
-                <img
-                  src="https://muladaricoffee.shop/images/muladari_logo.jpg"
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-              <span>{copy.coffeeLocation}</span>
-            </div>
-            <div className="coffee-page-copy">
-              <p>Muladari Coffee</p>
-              <h4>{copy.coffeeTagline}</h4>
-              <span>{copy.coffeePurpose}</span>
-            </div>
-            <div className="coffee-page-footer">
-              <span>{copy.exploreCoffee}</span>
-              <FiArrowUpRight aria-hidden="true" />
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    )
-  }
-
-  return (
-    <motion.div
-      ref={visualRef}
-      className="project-visual project-visual--scholarship"
-      role="img"
-      aria-label={copy.scholarshipIllustration}
-      style={{ y: cinematic && !shouldReduceMotion ? parallaxY : 0 }}
-      initial={shouldReduceMotion ? false : { scale: cinematic ? 1.045 : 1.015 }}
-      whileInView={shouldReduceMotion ? undefined : { scale: 1 }}
-      whileHover={cinematic ? { scale: 1.008 } : undefined}
-      viewport={{ once: true, amount: 0.22 }}
-      transition={visualTransition}
-    >
-      <div className="admin-sidebar">
-        <strong>PUB</strong>
-        <span className="active" />
-        <span />
-        <span />
-        <span />
-      </div>
-      <div className="admin-content">
-        <div className="admin-head">
-          <div>
-            <span>{copy.scholarship}</span>
-            <h4>{copy.studentRecords}</h4>
-          </div>
-          <b>{copy.addStudent}</b>
-        </div>
-        <div className="admin-stats">
-          <div>
-            <span>{copy.applications}</span>
-            <strong>{copy.open}</strong>
-          </div>
-          <div>
-            <span>{copy.selection}</span>
-            <strong>{copy.tokenBased}</strong>
-          </div>
-        </div>
-        <div className="admin-table">
-          {[0, 1, 2].map((row) => (
-            <div key={row}>
-              <i />
-              <span />
-              <span />
-              <b>{row === index ? copy.reviewed : copy.registered}</b>
-            </div>
-          ))}
-        </div>
-      </div>
-    </motion.div>
+  const value = useMotionValue(shouldReduceMotion ? to : 0)
+  const text = useTransform(value, (current) =>
+    current.toLocaleString(language, { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
   )
+
+  useEffect(() => {
+    if (!inView || shouldReduceMotion) return
+    const controls = animate(value, to, { duration: 1.6, ease: [0.16, 1, 0.3, 1] })
+    return () => controls.stop()
+  }, [inView, shouldReduceMotion, to, value])
+
+  return <motion.b ref={ref}>{text}</motion.b>
 }
 
 export default App

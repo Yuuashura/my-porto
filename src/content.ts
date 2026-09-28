@@ -40,15 +40,20 @@ export interface PortfolioContent {
     introduction: string
     viewGithub: string
     visitLive: string
+    viewDetails: string
+    carouselLabel: string
     technologiesLabel: string
   }
   experience: {
     note: string
+    development: string
+    teaching: string
     heading: string
     introduction: string
     education: string
     degree: string
     university: string
+    gpa: string
     items: Array<{
       period: string
       role: string
@@ -59,6 +64,7 @@ export interface PortfolioContent {
   about: {
     heading: string
     introduction: string
+    skillsLabel: string
     stack: {
       backend: string
       data: string
@@ -87,39 +93,30 @@ export interface PortfolioContent {
     booking: string
     jwt: string
     persistence: string
-    assessment: string
-    question: string
-    chooseMeaning: string
-    answerAccurate: string
-    answerTemporary: string
-    selected: string
-    correctionReady: string
-    scholarship: string
-    studentRecords: string
-    addStudent: string
-    applications: string
-    open: string
-    selection: string
-    tokenBased: string
-    reviewed: string
-    registered: string
     bookingIllustration: string
-    examIllustration: string
-    scholarshipIllustration: string
-    coffeeIllustration: string
-    coffeeTagline: string
-    coffeeLocation: string
-    coffeePurpose: string
-    exploreCoffee: string
+  }
+  projectDetail: {
+    back: string
+    gallery: string
+    galleryLabel: string
+    howBuilt: string
+    howBuiltIntro: string
+    tech: string
+    features: string
+    status: Record<'completed' | 'in-progress' | 'planned', string>
+    next: string
+    notFound: string
+    notFoundBody: string
+    home: string
   }
 }
 
 export const content: Record<Language, PortfolioContent> = {
   en: {
     meta: {
-      title: 'Yudistira Syaputra — Java Developer',
+      title: 'Yudistira Syaputra — Software Engineer',
       description:
-        'Portfolio of Yudistira Syaputra, a Java developer and programming instructor based in Bandung, Indonesia.',
+        'Portfolio of Yudistira Syaputra, a software engineer and programming instructor based in Bandung, Indonesia.',
     },
     language: {
       label: 'Language',
@@ -141,15 +138,15 @@ export const content: Record<Language, PortfolioContent> = {
       homeLabel: 'Yudistira Syaputra, home',
     },
     hero: {
-      role: 'Java developer',
+      role: 'Software engineer',
       location: 'Bandung, Indonesia',
-      title: 'I build Java systems that make complex work feel simple.',
-      titleLines: ['I build Java', 'systems that', 'make complex', 'work feel simple.'],
+      title: 'I engineer software that makes complex work feel simple.',
+      titleLines: ['I engineer', 'software that', 'makes complex', 'work feel simple.'],
       introduction:
-        'I’m Yudistira Syaputra, a developer and programming instructor focused on reliable backends, thoughtful interfaces, and software that answers real operational needs.',
+        'I’m Yudistira Syaputra, a software engineer and programming instructor building reliable backends, thoughtful interfaces, and products that answer real operational needs.',
       viewWork: 'View selected work',
       downloadCv: 'Download CV',
-      availability: 'Open to Java developer opportunities',
+      availability: 'Open to software engineering roles',
       buildingWith: 'Building with',
     },
     work: {
@@ -158,16 +155,21 @@ export const content: Record<Language, PortfolioContent> = {
         'Systems shaped around clear user flows, maintainable architecture, and the business problem underneath the code.',
       viewGithub: 'View GitHub',
       visitLive: 'Visit live site',
+      viewDetails: 'View project details',
+      carouselLabel: 'Selected projects',
       technologiesLabel: 'technologies',
     },
     experience: {
       note: 'Development meets teaching',
+      development: 'Development',
+      teaching: 'Teaching',
       heading: 'I learn deeply enough to explain clearly.',
       introduction:
         'Alongside building applications, I teach programming fundamentals and databases. That practice has made me a more patient collaborator and a more deliberate engineer.',
       education: 'Education',
       degree: 'B.Sc. Informatics Engineering',
-      university: 'Universitas Nasional PASIM Bandung · GPA 3.80/4.00',
+      university: 'Universitas Nasional PASIM Bandung',
+      gpa: 'GPA',
       items: [
         {
           period: 'Jun 2026 — Present',
@@ -199,6 +201,7 @@ export const content: Record<Language, PortfolioContent> = {
       heading: 'Practical across the stack. Grounded in the backend.',
       introduction:
         'My strongest work starts with Java and relational data, then extends into the frontend whenever the product needs a complete, coherent experience.',
+      skillsLabel: 'Tools I build with',
       stack: {
         backend: 'Backend',
         data: 'Data',
@@ -228,37 +231,32 @@ export const content: Record<Language, PortfolioContent> = {
       booking: 'Booking',
       jwt: 'JWT authentication',
       persistence: 'MySQL persistence',
-      assessment: 'Vocabulary assessment',
-      question: 'Question 08 / 20',
-      chooseMeaning: 'Choose the closest meaning.',
-      answerAccurate: 'Accurate and exact',
-      answerTemporary: 'Quick and temporary',
-      selected: 'Selected',
-      correctionReady: 'Auto-correction and manual review ready',
-      scholarship: 'Scholarship',
-      studentRecords: 'Student records',
-      addStudent: '+ Add student',
-      applications: 'Applications',
-      open: 'Open',
-      selection: 'Selection',
-      tokenBased: 'Token based',
-      reviewed: 'Reviewed',
-      registered: 'Registered',
       bookingIllustration: 'Hotel booking architecture illustration',
-      examIllustration: 'Vocabulary exam interface illustration',
-      scholarshipIllustration: 'Scholarship administration illustration',
-      coffeeIllustration: 'Muladari Coffee single-page website illustration',
-      coffeeTagline: 'From a Story into a Dream',
-      coffeeLocation: 'Batusangkar',
-      coffeePurpose: 'Coffee · Community · WFC',
-      exploreCoffee: 'Explore the coffee shop',
+    },
+    projectDetail: {
+      back: 'All projects',
+      gallery: 'Inside the product',
+      galleryLabel: 'Project screenshots',
+      howBuilt: 'How it’s built',
+      howBuiltIntro: 'The stack on the left feeds the product; the product delivers the features on the right.',
+      tech: 'Stack',
+      features: 'Delivers',
+      status: {
+        completed: 'Completed',
+        'in-progress': 'In progress',
+        planned: 'Planned',
+      },
+      next: 'Next project',
+      notFound: 'Project not found',
+      notFoundBody: 'That project doesn’t exist or has moved.',
+      home: 'Back to home',
     },
   },
   id: {
     meta: {
-      title: 'Yudistira Syaputra — Java Developer',
+      title: 'Yudistira Syaputra — Software Engineer',
       description:
-        'Portofolio Yudistira Syaputra, Java developer dan instruktur pemrograman yang berbasis di Bandung, Indonesia.',
+        'Portofolio Yudistira Syaputra, software engineer dan instruktur pemrograman yang berbasis di Bandung, Indonesia.',
     },
     language: {
       label: 'Bahasa',
@@ -280,15 +278,15 @@ export const content: Record<Language, PortfolioContent> = {
       homeLabel: 'Yudistira Syaputra, beranda',
     },
     hero: {
-      role: 'Java developer',
+      role: 'Software engineer',
       location: 'Bandung, Indonesia',
-      title: 'Saya membangun sistem Java yang membuat pekerjaan kompleks terasa sederhana.',
-      titleLines: ['Saya membangun', 'sistem Java', 'yang membuat hal rumit', 'terasa sederhana.'],
+      title: 'Saya merancang software yang membuat hal rumit terasa sederhana.',
+      titleLines: ['Saya merancang', 'software yang', 'membuat hal rumit', 'terasa sederhana.'],
       introduction:
-        'Saya Yudistira Syaputra, developer dan instruktur pemrograman yang berfokus pada backend andal, antarmuka yang matang, dan software yang menjawab kebutuhan operasional nyata.',
+        'Saya Yudistira Syaputra, software engineer dan instruktur pemrograman yang membangun backend andal, antarmuka yang matang, dan produk yang menjawab kebutuhan operasional nyata.',
       viewWork: 'Lihat proyek pilihan',
       downloadCv: 'Unduh CV',
-      availability: 'Terbuka untuk peluang Java developer',
+      availability: 'Terbuka untuk peran software engineer',
       buildingWith: 'Dibangun dengan',
     },
     work: {
@@ -297,16 +295,21 @@ export const content: Record<Language, PortfolioContent> = {
         'Sistem yang dibentuk melalui alur pengguna yang jelas, arsitektur yang mudah dipelihara, dan pemahaman terhadap masalah bisnis di balik kode.',
       viewGithub: 'Lihat GitHub',
       visitLive: 'Kunjungi situs',
+      viewDetails: 'Lihat detail proyek',
+      carouselLabel: 'Proyek pilihan',
       technologiesLabel: 'teknologi',
     },
     experience: {
       note: 'Development bertemu pengajaran',
+      development: 'Development',
+      teaching: 'Pengajaran',
       heading: 'Saya belajar cukup dalam untuk menjelaskan dengan jelas.',
       introduction:
         'Selain membangun aplikasi, saya mengajar fundamental pemrograman dan database. Pengalaman itu membentuk saya menjadi kolaborator yang lebih sabar dan engineer yang lebih terarah.',
       education: 'Pendidikan',
       degree: 'S1 Teknik Informatika',
-      university: 'Universitas Nasional PASIM Bandung · IPK 3,80/4,00',
+      university: 'Universitas Nasional PASIM Bandung',
+      gpa: 'IPK',
       items: [
         {
           period: 'Jun 2026 — Sekarang',
@@ -338,6 +341,7 @@ export const content: Record<Language, PortfolioContent> = {
       heading: 'Praktis di seluruh stack. Berakar kuat di backend.',
       introduction:
         'Keahlian utama saya dimulai dari Java dan data relasional, lalu meluas ke frontend ketika produk membutuhkan pengalaman yang lengkap dan konsisten.',
+      skillsLabel: 'Tools yang saya gunakan',
       stack: {
         backend: 'Backend',
         data: 'Data',
@@ -367,30 +371,25 @@ export const content: Record<Language, PortfolioContent> = {
       booking: 'Pemesanan',
       jwt: 'Autentikasi JWT',
       persistence: 'Penyimpanan MySQL',
-      assessment: 'Ujian kosakata',
-      question: 'Pertanyaan 08 / 20',
-      chooseMeaning: 'Pilih arti yang paling dekat.',
-      answerAccurate: 'Akurat dan tepat',
-      answerTemporary: 'Cepat dan sementara',
-      selected: 'Dipilih',
-      correctionReady: 'Siap untuk koreksi otomatis dan pemeriksaan manual',
-      scholarship: 'Beasiswa',
-      studentRecords: 'Data mahasiswa',
-      addStudent: '+ Tambah mahasiswa',
-      applications: 'Pendaftaran',
-      open: 'Dibuka',
-      selection: 'Pemilihan',
-      tokenBased: 'Berbasis token',
-      reviewed: 'Ditinjau',
-      registered: 'Terdaftar',
       bookingIllustration: 'Ilustrasi arsitektur aplikasi pemesanan hotel',
-      examIllustration: 'Ilustrasi antarmuka ujian kosakata',
-      scholarshipIllustration: 'Ilustrasi administrasi beasiswa',
-      coffeeIllustration: 'Ilustrasi website single-page Muladari Coffee',
-      coffeeTagline: 'Berawal dari Cerita Menjadi Sebuah Cita-Cita',
-      coffeeLocation: 'Batusangkar',
-      coffeePurpose: 'Kopi · Komunitas · WFC',
-      exploreCoffee: 'Jelajahi coffee shop',
+    },
+    projectDetail: {
+      back: 'Semua proyek',
+      gallery: 'Isi produknya',
+      galleryLabel: 'Tangkapan layar proyek',
+      howBuilt: 'Cara dibangun',
+      howBuiltIntro: 'Stack di kiri menjadi fondasi produk; produk menghadirkan fitur di kanan.',
+      tech: 'Stack',
+      features: 'Menghadirkan',
+      status: {
+        completed: 'Selesai',
+        'in-progress': 'Dalam pengerjaan',
+        planned: 'Direncanakan',
+      },
+      next: 'Proyek berikutnya',
+      notFound: 'Proyek tidak ditemukan',
+      notFoundBody: 'Proyek tersebut tidak ada atau sudah dipindahkan.',
+      home: 'Kembali ke beranda',
     },
   },
 }

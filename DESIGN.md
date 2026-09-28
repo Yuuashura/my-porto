@@ -1,451 +1,357 @@
 ---
 version: alpha
-name: Cohere-design-analysis
-description: Cohere's 2026 web system is a controlled enterprise AI interface built from stark white editorial space, deep green-black product bands, soft mineral surfaces, rounded media cards, and a distinctive type split between monospaced-feeling display headlines and precise Unica77 UI text.
+name: yudistira-portfolio
+description: Personal portfolio of Yudistira Syaputra (Yuuashura), software engineer. An editorial white canvas broken by deep-green and ink bands, Archivo display type over Source Sans 3 body copy, coral as the single warm accent, and motion that reveals content with transform-only easing. Inspired by Cohere's 2026 enterprise web system, adapted into a personal brand.
 
 colors:
-  primary: "#17171c"
-  cohere-black: "#000000"
-  ink: "#212121"
-  deep-green: "#003c33"
-  dark-navy: "#071829"
+  ink: "#17171c"
+  body: "#414145"
+  muted: "#66666f"
+  line: "#d9d9dd"
   canvas: "#ffffff"
-  soft-stone: "#eeece7"
-  pale-green: "#edfce9"
-  pale-blue: "#f1f5ff"
-  hairline: "#d9d9dd"
-  border-light: "#e5e7eb"
-  card-border: "#f2f2f2"
-  muted: "#93939f"
-  slate: "#75758a"
-  body-muted: "#616161"
-  action-blue: "#1863dc"
-  focus-blue: "#4c6ee6"
+  surface-gray: "#f7f7f8"
+  stone: "#eeece7"
+  green: "#003c33"
+  green-deep: "#002d27"
+  green-soft: "#edfce9"
+  mint: "#b4e3d7"
+  blue: "#2456c4"
+  blue-soft: "#f1f5ff"
   coral: "#ff7759"
-  coral-soft: "#ffad9b"
-  form-focus: "#9b60aa"
-  on-primary: "#ffffff"
+  coral-soft: "#fff4f0"
+  focus: "#4c6ee6"
+  available: "#9df391"
+  dark-rule: "#424248"
+  dark-muted: "#aeaeb7"
   on-dark: "#ffffff"
-  error: "#b30000"
+
+shadcn-tokens:
+  background: "0 0% 100%"
+  foreground: "240 10% 10%"
+  muted-surface: "43 17% 92%"
+  muted-foreground: "240 4% 42%"
+  border: "240 6% 86%"
+  ring: "227 75% 60%"
 
 typography:
-  hero-display:
-    fontFamily: CohereText
-    fontSize: 96px
-    fontWeight: 400
-    lineHeight: 1
-    letterSpacing: -1.92px
-  product-display:
-    fontFamily: CohereText
-    fontSize: 72px
-    fontWeight: 400
-    lineHeight: 1
-    letterSpacing: -1.44px
-  section-display:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 60px
-    fontWeight: 400
-    lineHeight: 1
-    letterSpacing: -1.2px
-  section-heading:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 48px
-    fontWeight: 400
-    lineHeight: 1.2
-    letterSpacing: -0.48px
-  card-heading:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 32px
-    fontWeight: 400
-    lineHeight: 1.2
-    letterSpacing: -0.32px
-  feature-heading:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 24px
-    fontWeight: 400
-    lineHeight: 1.3
-    letterSpacing: 0
-  body-large:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 18px
-    fontWeight: 400
-    lineHeight: 1.4
-    letterSpacing: 0
-  body:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 16px
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: 0
-  button:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 14px
+  intro-word:
+    fontFamily: Archivo
+    fontSize: clamp(3.6rem, 15vw, 13rem)
     fontWeight: 500
-    lineHeight: 1.71
-    letterSpacing: 0
+    lineHeight: 1
+    letterSpacing: -0.05em
+  hero-display:
+    fontFamily: Archivo
+    fontSize: clamp(3.35rem, 6.5vw, 5.9rem)
+    fontWeight: 420
+    lineHeight: 0.98
+    letterSpacing: -0.04em
+  detail-display:
+    fontFamily: Archivo
+    fontSize: clamp(3.2rem, 8vw, 7rem)
+    fontWeight: 420
+    lineHeight: 0.95
+    letterSpacing: -0.045em
+  contact-display:
+    fontFamily: Archivo
+    fontSize: clamp(3.7rem, 7vw, 6rem)
+    fontWeight: 420
+    lineHeight: 0.95
+    letterSpacing: -0.04em
+  section-heading:
+    fontFamily: Archivo
+    fontSize: clamp(2.7rem, 5vw, 4.8rem)
+    fontWeight: 420
+    lineHeight: 1
+    letterSpacing: -0.04em
+  quote:
+    fontFamily: Archivo
+    fontSize: clamp(2rem, 4vw, 3.8rem)
+    lineHeight: 1.08
+    letterSpacing: -0.035em
+  project-title:
+    fontFamily: Archivo
+    fontSize: clamp(2rem, 3.4vw, 3.2rem)
+    lineHeight: 1
+    letterSpacing: -0.04em
+  timeline-heading:
+    fontFamily: Archivo
+    fontSize: clamp(24px, 2.6vw, 34px)
+    lineHeight: 1.12
+  lead:
+    fontFamily: Source Sans 3
+    fontSize: clamp(18px, 1.5vw, 21px)
+    fontWeight: 400
+    lineHeight: 1.52
+  body-large:
+    fontFamily: Source Sans 3
+    fontSize: 17px-19px
+    lineHeight: 1.55
+  button:
+    fontFamily: Source Sans 3
+    fontSize: 15px
+    fontWeight: 600
   caption:
-    fontFamily: Unica77 Cohere Web
+    fontFamily: Source Sans 3
     fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.4
-    letterSpacing: 0
-  mono-label:
-    fontFamily: CohereMono
-    fontSize: 14px
-    fontWeight: 400
-    lineHeight: 1.4
-    letterSpacing: 0.28px
   micro:
-    fontFamily: Unica77 Cohere Web
-    fontSize: 12px
-    fontWeight: 400
-    lineHeight: 1.4
-    letterSpacing: 0
+    fontFamily: Source Sans 3
+    fontSize: 12px-13px
 
 rounded:
-  xs: 4px
   sm: 8px
-  md: 16px
-  lg: 22px
-  xl: 30px
-  pill: 32px
-  full: 9999px
+  md: 10px
+  lg: 14px
+  card: 16px
+  pill: 999px
 
 spacing:
-  xxs: 2px
-  xs: 6px
-  sm: 8px
-  md: 12px
-  lg: 16px
-  xl: 24px
-  xxl: 32px
-  section: 80px
+  container: min(1320px, 100vw - 48px)
+  header: 76px (68px under 780px)
+  section-y: clamp(92px, 12vw, 170px)
+  detail-section-y: clamp(72px, 9vw, 130px)
+
+motion:
+  ease-out: cubic-bezier(0.16, 1, 0.3, 1)
+  reveal-distance: 42px desktop / 16px compact
+  stagger: 0.07s
+  intro-hold: 1.6s
+  intro-lift: 0.9s
 
 components:
-  button-primary:
-    backgroundColor: "{colors.primary}"
-    textColor: "{colors.on-primary}"
+  intro-splash:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.on-dark}"
+    typography: "{typography.intro-word}"
+  button-dark:
+    backgroundColor: "{colors.ink}"
+    hoverBackground: "{colors.green}"
+    textColor: "{colors.on-dark}"
     typography: "{typography.button}"
     rounded: "{rounded.pill}"
     padding: 12px 24px
-  button-secondary:
-    backgroundColor: transparent
-    textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    rounded: "{rounded.xs}"
-    padding: 8px 0
-  button-pill-outline:
-    backgroundColor: transparent
-    textColor: "{colors.primary}"
-    typography: "{typography.button}"
-    rounded: "{rounded.xl}"
-    padding: 6px 12px
-  announcement-bar:
-    backgroundColor: "{colors.cohere-black}"
-    textColor: "{colors.on-dark}"
-    typography: "{typography.micro}"
-    height: 36px
-  hero-photo-card:
+  button-light:
     backgroundColor: "{colors.canvas}"
+    hoverBackground: "{colors.coral}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.pill}"
+  text-link:
+    textColor: "{colors.ink}"
+    border: 1px bottom rule
+  coverflow-card:
+    backgroundColor: "#e9e9ec"
+    rounded: "{rounded.card}"
+    aspectRatio: 16/10
+  icon-cloud:
+    backgroundColor: "{colors.canvas}"
+  build-diagram:
+    backgroundColor: "{colors.stone}"
+    hub: "{colors.ink}"
     rounded: "{rounded.lg}"
-  agent-console-card:
-    backgroundColor: "{colors.primary}"
+  experience-band:
+    backgroundColor: "{colors.green}"
     textColor: "{colors.on-dark}"
-    rounded: "{rounded.sm}"
-    padding: 24px
-  trust-logo-strip:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.caption}"
-  capability-card:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body}"
-    rounded: "{rounded.xs}"
-    padding: 24px
-  dark-feature-band:
-    backgroundColor: "{colors.deep-green}"
-    textColor: "{colors.on-dark}"
+  principles-card:
+    backgroundColor: "{colors.stone}"
     rounded: "{rounded.lg}"
-    padding: 80px
-  product-card:
-    backgroundColor: "{colors.soft-stone}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.sm}"
-    padding: 32px
-  blog-filter-chip:
-    backgroundColor: transparent
-    textColor: "{colors.coral}"
-    typography: "{typography.card-heading}"
-    rounded: "{rounded.sm}"
-    padding: 8px 14px
-  research-table:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    typography: "{typography.body-large}"
-  contact-form-card:
-    backgroundColor: "{colors.canvas}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.lg}"
-    padding: 32px
-  footer-newsletter:
-    backgroundColor: "{colors.primary}"
+  contact-band:
+    backgroundColor: "{colors.ink}"
     textColor: "{colors.on-dark}"
-    typography: "{typography.micro}"
 ---
 
 ## Overview
 
-Cohere's current web presence feels like a sober enterprise AI command center with editorial restraint. The home page opens on a huge typographic declaration over a white canvas, then uses photography, dark product mockups, trust logos, and generous empty space to make AI infrastructure feel controlled rather than speculative. Product pages invert the tone into deep green-black or dark navy bands, while blog and research pages move toward publishing-system clarity: large filters, thin rules, dense lists, and pale technical backgrounds.
+A personal portfolio for a software engineer who also teaches. The tone is calm and editorial: one oversized headline per section, generous whitespace, thin rules instead of boxes, and color that arrives in full-width bands (deep green for experience, ink for contact) rather than as decoration. Coral is the only warm accent and is reserved for small markers — the brand dot, arrows, the scroll bar, timeline progress, the active GPA figure.
 
-What makes the system distinctive is the mix of austere black-and-white UI with bursts of tactile brand imagery. The site avoids decorative chrome in the normal interface; color arrives through photography, abstract 3D media, coral blog taxonomy chips, blue research links, and dark product environments. Cards are rounded but not cute. Type is large, tight, and almost monospaced in spirit, creating a research-lab cadence across marketing, product, and editorial surfaces.
+The first visit opens with a full-screen ink curtain spelling **Yuuashura**, which lifts upward to reveal the hero. From there the page reads as a sequence: who I am, what I built (coverflow carousel), how I learned (experience band), what I use (icon cloud), how I work, and how to reach me. Every project opens its own page at `/projek/{slug}`.
 
-**Key Characteristics:**
-- Monumental display headlines with very tight line height and negative tracking.
-- White editorial canvases interrupted by deep green, dark navy, and image-led CTA bands.
-- Rounded media cards and product cards, usually 8px to 22px.
-- Pill CTAs in near-black or white, with most secondary actions rendered as underlined text links.
-- Trust-logo strips with monochrome partner marks and very wide vertical spacing.
-- Agent-console mockups using dark panels, small status chips, and product integration badges.
-- Blog and research surfaces with prominent taxonomy chips, long rule-separated lists, and search fields.
+The system started from an analysis of Cohere's 2026 web design (monumental tight display type, white canvas, dark product bands, pill CTAs) and was adapted to a personal, bilingual (EN/ID) site.
+
+**Key characteristics**
+- Archivo display at weight 420 with tight negative tracking; Source Sans 3 for everything else.
+- White canvas, `#f7f7f8` for the work area, green band for experience, ink band for contact.
+- Pill CTAs in ink that turn green on hover; secondary actions are underlined text links.
+- Real product screenshots in a 3D coverflow instead of invented mock UIs.
+- Transform-only motion (no fades on content), full `prefers-reduced-motion` fallback.
 
 ## Colors
 
-### Brand & Accent
+### Brand & accent
+- **Ink** `#17171c` — primary text, dark buttons, intro curtain, contact band, build-diagram hub.
+- **Green** `#003c33` — experience band, mobile menu, button hover, Booking Hotels architecture card.
+- **Coral** `#ff7759` — brand dot, scroll progress, timeline rail, arrows, selection highlight, GPA figure, "Teaching" pill. Never a large surface.
+- **Blue** `#2456c4` — end of the feature beams in the build diagram.
 
-- **Cohere Black** (`#000000`): Announcement bar, highest-contrast text, and the global brand anchor.
-- **Near-Black Primary** (`#17171c`): Primary CTA buttons, dark footer, and deep UI cards.
-- **Deep Enterprise Green** (`#003c33`): Product hero bands for North and Command-style dark sections.
-- **Dark Navy** (`#071829`): Financial-services and security-oriented solution bands.
-- **Action Blue** (`#1863dc`): Editorial links, pagination, and secondary action emphasis.
-- **Coral** (`#ff7759`): Blog category chips, taxonomy outlines, and warm product markers.
-- **Soft Coral** (`#ffad9b`): Pale chip borders and segmented article-label details.
+### Surfaces
+- **Canvas** `#ffffff` — default page.
+- **Surface gray** `#f7f7f8` — work section and detail gallery.
+- **Stone** `#eeece7` — principles card, build diagram.
+- **Green soft** `#edfce9` — portrait offset block, "Completed" status chip.
+- **Coral soft** `#fff4f0` — "In progress" status chip.
 
-### Surface & Background
-
-- **Canvas White** (`#ffffff`): Dominant page background and form/card surface.
-- **Soft Stone** (`#eeece7`): Product cards, testimonial placeholders, and warm neutral surface blocks.
-- **Pale Green Wash** (`#edfce9`): North page section backdrop behind stacked dark capability panels.
-- **Pale Blue Wash** (`#f1f5ff`): Blog CTA surface behind abstract 3D imagery.
-- **Card Border** (`#f2f2f2`): Softest card containment line.
-
-### Text & Rules
-
-- **Ink** (`#212121`): Default body text and most link text on light backgrounds.
-- **Muted Slate** (`#93939f`): Footer links, dates, metadata, and de-emphasized labels.
-- **Slate** (`#75758a`): Research separators and tertiary text.
-- **Hairline** (`#d9d9dd`): Standard list rules and section dividers.
-- **Border Light** (`#e5e7eb`): Secondary divider and utility rule.
+### Text & rules
+- **Body** `#414145`, **Muted** `#66666f`, **Line** `#d9d9dd`.
+- On dark bands: white text, `rgba(255,255,255,.68–.78)` secondary, **Mint** `#b4e3d7` labels, **Dark rule** `#424248`.
 
 ### Semantic
+- **Focus** `#4c6ee6` — 3px focus outline, carousel focus ring.
+- **Available** `#9df391` — availability dot in the portrait caption.
 
-- **Focus Blue** (`#4c6ee6`): Keyboard focus and ring color.
-- **Form Focus Violet** (`#9b60aa`): Focus border for text inputs.
-- **Error Red** (`#b30000`): Extracted ring/shadow color associated with validation-like states.
-
-### Gradient System
-
-Cohere does not use gradients as a generic UI fill. Gradients and color fields are media-led: abstract 3D hero imagery, deep blue open-science particle fields, red-orange product video posters, and dark green-to-black product environments. Keep UI surfaces flat; reserve gradient richness for large media panels and CTA image bands.
+### shadcn tokens
+`src/components/ui/*` components use Tailwind classes like `bg-background`, `text-foreground`, `bg-muted`, `ring-ring`. These map to HSL channels in `:root` (`--background`, `--foreground`, `--muted-surface`, `--muted-foreground`, `--border`, `--ring`) via `tailwind.config.js`. Note `--muted` is the site's text gray, so the shadcn surface token is named `--muted-surface`.
 
 ## Typography
 
-### Font Family
+- **Display**: Archivo (Google Fonts, variable weight), default weight 420, `text-wrap: balance`.
+- **Body/UI**: Source Sans 3 (400/500/600), `text-wrap: pretty`.
 
-- **Display**: `CohereText`, falling back to `Space Grotesk`, `Inter`, `ui-sans-serif`, and `system-ui`.
-- **Body/UI**: `Unica77 Cohere Web`, falling back to `Inter`, `Arial`, `ui-sans-serif`, and `system-ui`.
-- **Technical labels**: `CohereMono`, falling back to `Arial`, `ui-sans-serif`, and `system-ui`.
-- **Icons**: Cohere uses custom icon fonts and thin-line geometric illustrations.
+| Role | Size | Line height | Tracking | Where |
+|---|---|---:|---:|---|
+| Intro word | clamp(3.6rem, 15vw, 13rem) | 1 | -0.05em | Intro splash |
+| Hero display | clamp(3.35rem, 6.5vw, 5.9rem) | 0.98 | -0.04em | Home hero |
+| Detail display | clamp(3.2rem, 8vw, 7rem) | 0.95 | -0.045em | Project page title |
+| Contact display | clamp(3.7rem, 7vw, 6rem) | 0.95 | -0.04em | Contact band |
+| Section heading | clamp(2.7rem, 5vw, 4.8rem) | 1 | -0.04em | Work, About |
+| Quote | clamp(2rem, 4vw, 3.8rem) | 1.08 | -0.035em | Principles card |
+| Project title | clamp(2rem, 3.4vw, 3.2rem) | 1 | -0.04em | Work caption |
+| Timeline heading | clamp(24px, 2.6vw, 34px) | 1.12 | 0 | Experience |
+| Lead | clamp(18px, 1.5vw, 21px) | 1.52 | 0 | Hero intro, detail intro |
+| Body large | 17–19px | 1.55 | 0 | Section intros |
+| Button | 15px / 600 | — | 0 | Buttons, links |
+| Caption | 14px | — | 0 | Meta rows, labels |
+| Micro | 12–13px | — | 0 | Chips, footer |
 
-### Hierarchy
-
-| Role | Font | Size | Weight | Line Height | Letter Spacing | Notes |
-|---|---|---:|---:|---:|---:|---|
-| Hero Display | CohereText | 96px | 400 | 1.00 | -1.92px | Home page declaration scale. |
-| Product Display | CohereText | 72px | 400 | 1.00 | -1.44px | Product and research hero headlines. |
-| Section Display | Unica77 | 60px | 400 | 1.00 | -1.2px | Large product-page headings. |
-| Section Heading | Unica77 | 48px | 400 | 1.20 | -0.48px | Split hero and CTA headings. |
-| Card Heading | Unica77 | 32px | 400 | 1.20 | -0.32px | Feature card and list section titles. |
-| Feature Heading | Unica77 | 24px | 400 | 1.30 | 0 | Cards, filters, and article titles. |
-| Body Large | Unica77 | 18px | 400 | 1.40 | 0 | Lead text and larger paragraphs. |
-| Body | Unica77 | 16px | 400 | 1.50 | 0 | Default copy and link text. |
-| Button | Unica77 | 14px | 500 | 1.71 | 0 | Compact CTA labels. |
-| Caption | Unica77 | 14px | 400 | 1.40 | 0 | Metadata and small explanatory text. |
-| Mono Label | CohereMono | 14px | 400 | 1.40 | 0.28px | Uppercase technical labels. |
-| Micro | Unica77 | 12px | 400 | 1.40 | 0 | Footer, nav microcopy, and small links. |
-
-### Principles
-
-- Use massive type sparingly; Cohere pages often have one oversized headline and then settle into restrained 16px-24px UI copy.
-- Keep display type tight. Hero copy should feel compact and carved, not airy.
-- Avoid heavy bold weights. Size, spacing, and surface contrast do most of the hierarchy work.
-- Use uppercase mono labels for category and system markers, especially on product and research pages.
-- Editorial pages can use coral chips and blue links, but the base typography remains black and measured.
+**Principles**
+- One oversized headline per section; everything else settles to 14–21px.
+- Weight stays near 420 for display; hierarchy comes from size and tracking, not bold.
+- Headlines animate by line (hero) or by word (experience) inside overflow masks.
 
 ## Layout
 
-### Spacing System
+### Page sequence — home (`/`)
+1. **Intro splash** — once per tab session.
+2. **Hero** — white; copy (1.6fr) + portrait (0.7fr); proof strip of core tech under a rule.
+3. **Work** — `#f7f7f8`; heading row, 3D coverflow of projects, centered caption for the active project with a "View project details" button.
+4. **Experience** — green band; sticky intro (Development ⇄ Teaching beam, word-reveal heading, education + GPA counter) beside the timeline.
+5. **About** — white; heading row, icon cloud (0.9fr) beside grouped stack list (1.1fr), stone principles card.
+6. **Contact** — ink band; big heading, email button, 3-column contact grid, footer.
 
-The system uses an 8px base with many one-off alignment values: `2px`, `6px`, `8px`, `10px`, `12px`, `16px`, `20px`, `22px`, `24px`, `28px`, `32px`, `36px`, `40px`, `56px`, `60px`, `64px`, and `80px`.
+### Page sequence — project (`/projek/{slug}`)
+1. Slim header: brand → home, "All projects" → `/#work`, language switcher.
+2. Hero: category · year · status chip, detail display title, lead + tech chips + links.
+3. Gallery (`#f7f7f8`): screenshot coverflow with captions; Booking Hotels shows the architecture visual instead.
+4. How it's built (white): stone build diagram — stack → project hub → features, connected by animated beams.
+5. Next project (ink band) + footer.
 
-Large sections rely on dramatic vertical breathing room. The home page places a trust-logo strip far below the hero media. Product pages often hold dark panels inside fields of empty white space, then transition to dense forms or footers only near the end.
+Routing is a pathname check in `src/main.tsx` — no router library. Static hosts need an SPA rewrite to `index.html` for deep links.
 
-### Grid & Container
-
-- Global nav uses a three-zone layout: logo left, menu centered, sign-in/CTA right.
-- Home hero is centered text above a two-card media composition: a wide product mockup card beside a narrower photography card.
-- Feature sections commonly use 3-column cards on desktop.
-- Product pages alternate centered hero blocks, trust-logo strips, large single-feature bands, and 2- or 3-column card grids.
-- Research pages use full-width lists with date and chip columns instead of decorative cards.
-- Forms use two-column input rows inside a rounded white card on dark or stone section backgrounds.
-
-### Whitespace Philosophy
-
-Cohere uses whitespace as a trust signal. Large empty intervals separate the brand claim, customer proof, product proof, and CTA. Dense content appears only where it serves the information architecture: research paper rows, blog card grids, and contact form fields.
+### Grid & container
+- Container `min(1320px, 100vw - 48px)`; full-bleed sections pad with `max(24px, (100vw - 1320px) / 2)`.
+- Nav is a three-zone grid (brand / links / actions).
+- Section headings are a 2-column grid: heading left, intro right-aligned.
 
 ## Elevation & Depth
 
-Cohere is mostly flat. Depth comes from surface alternation, media contrast, rounded corners, and thin borders rather than drop shadows.
+Mostly flat. Depth only where it carries meaning:
 
-| Level | Treatment | Use |
-|---|---|---|
-| Flat | No shadow, white or dark field | Hero copy, research lists, editorial surfaces |
-| Bordered | 1px `#d9d9dd`, `#e5e7eb`, or dark translucent rules | Research rows, forms, pale cards, footer inputs |
-| Media Lift | Rounded image or video over contrasting section color | Hero photo cards, product videos, CTA imagery |
-| Dark Product Field | Deep green or navy full-width band | Command, North, financial services, security sections |
+| Treatment | Use |
+|---|---|
+| 3D perspective + `shadow-xl` | Coverflow cards (`box-shadow: 0 24px 60px -28px rgba(23,23,28,.45)`) |
+| Offset color block | Portrait sits over a `green-soft` block |
+| Ring halo | Build hub `0 0 0 8px rgba(23,23,28,.06)`, availability dot, timeline dot pulse |
+| Full-width band | Experience (green), contact / next project (ink) |
 
 ## Shapes
 
-### Radius Scale
-
-| Token | Value | Role |
+| Token | Value | Use |
 |---|---:|---|
-| `xs` | 4px | Small images, search fields, article thumbnails, utility elements |
-| `sm` | 8px | Blog chips, cards, small media, dialogs |
-| `md` | 16px | Medium product cards and grouped blocks |
-| `lg` | 22px | Signature media-card and soft placeholder radius |
-| `xl` | 30px | Research/topic filter pills |
-| `pill` | 32px | Primary CTA buttons |
-| `full` | 9999px | Round status elements and fully pill-shaped controls |
-
-### Image Treatment
-
-Images are not decorative backdrops for text except in CTA bands. Most imagery sits as rounded cards with visible corners: product videos, enterprise photography, article thumbnails, and abstract 3D renders. The dominant radii are 8px and 22px.
+| `sm` | 8px | Service nodes, feature nodes, portrait caption |
+| `md` | 10px | Mock window frames |
+| `lg` | 14px | Portrait, project visuals, principles card, build diagram, build hub |
+| `card` | 16px | Coverflow cards (`rounded-2xl`) |
+| `pill` | 999px | Buttons, chips, language switcher, stack nodes, Development/Teaching pills |
 
 ## Components
 
-### **`button-primary`**
+### `intro-splash` — `src/components/IntroSplash.tsx`
+Fixed ink layer, "Yuuashura" letters rise out of masks (0.05s stagger), a coral dot pops in, and a coral progress line fills along the bottom for 1.6s. When the line completes the layer exits `y: -100%` over 0.9s and the hero entrance starts mid-lift. Plays once per session (`sessionStorage`), home only, skipped for reduced motion. Scroll and Lenis are paused while visible. Helpers live in `src/lib/intro.ts`.
 
-Near-black or white pill CTA, depending on surface contrast. Uses 14px-16px Unica77, 12px 24px padding, and a 32px pill radius. This is the primary action style for "Request a demo", "Submit", and hero CTAs.
+### `button` (`--dark`, `--light`, `--large`), `text-link`, `project-link`, `nav-cta`
+Ink pill → green on hover, lifts 2px, arrow icon nudges diagonally; active state scales 0.97. Light variant turns coral on hover. Text links are 600 weight with a 1px bottom rule.
 
-### **`button-secondary`**
+### `language-switcher` — `src/components/LanguageSwitcher.tsx`
+Two-button pill (EN / ID), active button filled ink. Preference stored in `localStorage` via `src/hooks/useLanguage.ts`, shared by both pages.
 
-Text-only action link, usually underlined or rule-aligned, with no filled background. Used for "Explore products", "Try the Playground", newsletter signup, and secondary hero actions.
+### `coverflow-carousel` — `src/components/ui/coverflow-carousel.tsx`
+3D ring of cards painted straight to the DOM (no per-frame React state). Drag/flick, arrow keys, prev/next buttons, pagination dots. Project-specific extensions: `aspectRatio` (16:10 here), `render` (custom slide content), `onSelect` (sync the caption), `onOpen` (tap or Enter on the centered card; tapping a side card only centers it). Screenshots use `object-position: top` and lazy loading.
 
-### **`button-pill-outline`**
+### `ArchitectureVisual` — `src/components/ArchitectureVisual.tsx`
+Green service-flow diagram (React client → API gateway → Auth / Hotels / Booking) used for Booking Hotels until it has screenshots. Inside a carousel card a container query hides the title/footer rows and shrinks nodes.
 
-Outlined pill control with transparent fill, 1px dark border, and 30px radius. Used for research filters, topic tags, and lightweight taxonomy controls.
+### `icon-cloud` — `src/components/ui/interactive-icon-cloud.tsx`
+Rotating 3D cloud of simple-icons logos (fetched at runtime from jsDelivr, simple-icons v14). Light theme only. Always paired with the text stack list so skills stay readable to screen readers.
 
-### **`announcement-bar`**
+### `animated-beam` — `src/components/ui/animated-beam.tsx`
+SVG quadratic path between two refs with a traveling gradient. Used for:
+- **Development ⇄ Teaching** pills on the experience band (two opposing beams, coral ↔ mint).
+- **Build diagram** on project pages (coral → green into the hub, green → blue out to features).
+The gradient is dropped under reduced motion; only the faint base path remains.
 
-Full-width black strip above the nav, 36px tall, centered microcopy with an underlined "Learn more" link and a close control at the far right.
+### `timeline`
+Coral rail scales with scroll progress; each dot pulses (staggered 0.7s) and turns coral on hover; the role heading shifts 4px and turns mint on hover.
 
-### **`hero-photo-card`**
+### `education-note` + `CountUp`
+Degree, university, and GPA counted up from 0 to 3.80 (locale-formatted, `3,80` in Indonesian) when scrolled into view.
 
-Rounded media card used in the home hero and solution pages. It combines photography or abstract imagery with an overlaid dark agent-console module. Radius is usually 22px on large cards and 8px on smaller thumbnails.
+### `stack-group`, `principles`, `contact-details`
+Rule-separated rows of stack items; stone quote card with three principle rows; 3-column contact grid with coral icons.
 
-### **`agent-console-card`**
+### `build-diagram` — `src/pages/ProjectDetail.tsx`
+Stone panel: stack pills (left), ink hub with the YS coral badge and project title (center), feature cards (right, right-aligned). Beams recompute on resize.
 
-Dark product mockup panel showing agent names, status chips, integration badges, prompt fields, and generated response cards. Background is near-black, text is white or muted, and small accent chips use product colors.
+### `status-chip`
+Completed = green-soft / green, In progress = coral-soft / `#a4442c`.
 
-### **`trust-logo-strip`**
+## Motion
 
-Centered copy above a row of monochrome customer logos. It is intentionally quiet: no cards, no borders, just large horizontal spacing and black or white logos depending on the background.
-
-### **`capability-card`**
-
-Content block with thin-line geometric illustration, 24px heading, body copy, and a text link. On light backgrounds, cards often have only a top rule or a subtle image/card relationship rather than full boxing.
-
-### **`dark-feature-band`**
-
-Deep green or navy full-width section used for product capabilities, security claims, and feature breakdowns. Text turns white; cards use darker translucent surfaces, pale borders, and abstract line illustrations.
-
-### **`product-card`**
-
-Warm stone card used for product/model summaries. Typically 3-column on desktop, with 8px radius, generous padding, a small pill button, a divider line, and checkmark bullet rows.
-
-### **`blog-filter-chip`**
-
-Large coral taxonomy chip used on the blog index. Active chips invert to coral fill with dark text; inactive chips use coral outline and pale fill. Typography is oversized relative to typical filters, making the taxonomy a hero-level control.
-
-### **`research-table`**
-
-Rule-separated publication list with title left, topic pills centered, and date right. Rows are tall, white, and border-driven; filters above use many compact outlined pills.
-
-### **`contact-form-card`**
-
-Rounded white form panel set against dark green or warm stone sections. Inputs are rectangular with thin gray borders, 12px-16px padding, and compact labels/placeholders. Submit uses the same near-black pill style as primary CTAs.
-
-### **`footer-newsletter`**
-
-Dark footer subscription block with coral "AI moves fast" label, white headline, muted legal microcopy, a single-line email field, and arrow submit marker. Footer columns use white section labels and muted links.
+- **Easing**: `cubic-bezier(0.16, 1, 0.3, 1)` everywhere (CSS `--ease-out` and framer `[0.16, 1, 0.3, 1]`).
+- **Reveal** (`src/components/MotionSystem.tsx`): `rise`, `slide-left`, `slide-right`, `scale`; transform only, once per element.
+- **Cinematic vs compact** (`useDesktopMotion`): desktop with fine pointer gets 42px travel and longer durations; touch/small screens get 16px.
+- **Stagger**: 0.07s between list items, 0.05s between intro letters.
+- **Smooth scroll**: Lenis on desktop only, paused while the intro or mobile menu is open.
+- **Micro-interactions**: button lift, arrow nudge, portrait sheen sweep, nav underline grow, node lift.
+- **Reduced motion**: `MotionConfig reducedMotion="user"`, intro skipped, beams static, and a global CSS rule shortens all animations/transitions.
 
 ## Do's and Don'ts
 
 ### Do
-
-- Use white canvas as the default surface; introduce dark green or navy as full-width product bands.
-- Keep primary CTAs pill-shaped and near-black on light surfaces.
-- Use 22px radius on major media cards and placeholders.
-- Use coral for editorial taxonomy and small warm accents, not as the main CTA system.
-- Use monochrome trust logos with wide spacing.
-- Use thin-line geometric illustrations for research and capability icons.
-- Let photography and product mockups carry color, while the UI shell stays restrained.
+- Keep the canvas white; introduce green or ink only as full-width bands.
+- Use coral for small markers and motion accents only.
+- Show real screenshots; fall back to an honest diagram when there are none.
+- Put all copy in `src/content.ts` for both `en` and `id`.
+- Pair any canvas/visual-only element (icon cloud, beams) with readable text.
 
 ### Don't
-
-- Do not turn coral or blue into broad decorative surface colors.
-- Do not add heavy drop shadows to cards.
-- Do not make every section card-based; Cohere often uses unframed rows, rules, and open space.
-- Do not use rounded cards below 8px for major media.
-- Do not replace the display/body type split with one generic sans-serif voice.
-- Do not render undocumented interaction variants in documentation or previews.
-- Do not use saturated gradients as normal UI backgrounds; keep gradients media-led.
+- Don't add heavy drop shadows outside the coverflow.
+- Don't fade content in with opacity; move it with transforms.
+- Don't use more than one display-size headline per section.
+- Don't invent dashboard data or fake metrics.
+- Don't name new CSS variables that collide with existing ones (`--muted` is taken).
 
 ## Responsive Behavior
 
-### Breakpoints
+| Breakpoint | Changes |
+|---|---|
+| ≤1080px | Container 980px; hero columns tighten; timeline items stack date above content; skills become one column (cloud max 460px, centered); standalone architecture visual goes vertical |
+| ≤780px | Header 68px, hamburger + green full-screen mobile menu; hero, section headings, experience, contact collapse to one column; experience intro no longer sticky; detail header becomes brand / back / language; build diagram nodes shrink to 12px |
+| ≤520px | Hero actions stack; proof strip stacks; work caption actions stack; contact footer stacks |
 
-| Name | Width | Key Changes |
-|---|---:|---|
-| Small Mobile | <425px | Single-column cards, compact nav, reduced hero headline scale |
-| Mobile | 425-640px | Hero media stacks, card grids become one column, form rows stack |
-| Large Mobile | 640-768px | Wider one-column layouts with larger media cards |
-| Tablet | 768-1024px | Two-column cards begin, nav spacing tightens |
-| Desktop | 1024-1440px | Full nav, 3-column card grids, split hero compositions |
-| Large Desktop | 1440-2560px | Wide containers and large empty vertical intervals |
-
-### Touch Targets
-
-Primary CTAs and pills meet comfortable touch sizing through 12px-24px padding and pill radii. Research filter chips and blog category chips are larger than standard tags, making dense taxonomy surfaces usable on touch devices.
-
-### Collapsing Strategy
-
-- Nav collapses from full horizontal links to a compact mobile menu.
-- Hero media moves from split cards to stacked cards.
-- Product and capability grids collapse from 3 columns to 2 and then 1.
-- Form fields collapse from paired rows to a single column.
-- Research rows preserve their rule-separated structure but stack metadata below titles on smaller widths.
-
-## Iteration Guide
-
-1. Start from a white canvas or a full-width dark green/navy band; avoid mid-tone page backgrounds unless the screenshot shows a specific CTA/form section.
-2. Use `button-primary` for the single highest-priority action and `button-secondary` for the companion action.
-3. Use `hero-photo-card` or `agent-console-card` when a page needs visual energy; avoid invented dashboard data.
-4. For editorial pages, combine `blog-filter-chip`, `button-pill-outline`, and `research-table` instead of generic marketing cards.
-5. Keep component examples structurally honest: placeholder product frames are better than invented product content.
+Coverflow cards scale with `clamp(260px, 46vw, 640px)` (home) and `clamp(260px, 58vw, 780px)` (project page); touch drag keeps vertical page scrolling (`touch-action: pan-y`).
 
 ## Known Gaps
 
-- Exact proprietary font files are not bundled; use the documented fallbacks when implementing externally.
-- Mobile screenshots were not regenerated in this public update, so mobile behavior is documented from the desktop system and existing responsive patterns.
-- Some live pages lazy-load content blocks late; blank testimonial placeholders are documented as placeholder skeleton surfaces rather than filled testimonial cards.
+- Legacy Genshin/Fontaine components (`HeroTeyvat`, `WishAnimation`, `Constellation`, `ContactAltar`, etc. in `src/components/`, plus `src/components/ui/OrnateFrame.tsx` and `WishButton.tsx`) are unused and not part of this system; `animejs` and `react-intersection-observer` are only used by them.
+- Icon cloud fetches icons from jsDelivr at runtime and `react-icon-cloud` uses `eval` internally (build warning; matters only under a strict CSP).
+- Muladari Coffee screenshots are ~2 MB PNGs each; converting to WebP would speed up the carousel.
+- The CV file is still named `JAVA DEVELOPER - YUDISTIRA SYAPUTRA.pdf`.
+- Deep links (`/projek/...`) need an SPA rewrite on the production host.

@@ -2,6 +2,11 @@ import type { Language } from '../content'
 
 type LocalizedText = Record<Language, string>
 
+export interface Screenshot {
+  src: string
+  label: string
+}
+
 export interface Project {
   id: 'booking-hotels' | 'exam-vocabulary' | 'pub-scholarship' | 'muladari-coffee'
   title: string
@@ -9,11 +14,16 @@ export interface Project {
   category: LocalizedText
   year: string
   tech: string[]
-  tone: 'green' | 'blue' | 'coral' | 'coffee'
+  features: LocalizedText[]
+  /** First item is the carousel cover. Empty = render the architecture illustration. */
+  screenshots: Screenshot[]
   github?: string
   link?: string
   status: 'completed' | 'in-progress' | 'planned'
 }
+
+const shots = (folder: string, files: Array<[file: string, label: string]>): Screenshot[] =>
+  files.map(([file, label]) => ({ src: encodeURI(`/${folder}/${file}`), label }))
 
 const projects: Project[] = [
   {
@@ -29,7 +39,12 @@ const projects: Project[] = [
     },
     year: '2026',
     tech: ['Java', 'Spring Boot', 'Microservices', 'React', 'MySQL'],
-    tone: 'green',
+    features: [
+      { en: 'API gateway routing', id: 'Routing lewat API gateway' },
+      { en: 'JWT authentication', id: 'Autentikasi JWT' },
+      { en: 'Room search & booking', id: 'Pencarian & pemesanan kamar' },
+    ],
+    screenshots: [],
     status: 'in-progress',
     github: 'https://github.com/YuuAshura',
   },
@@ -46,7 +61,18 @@ const projects: Project[] = [
     },
     year: '2026',
     tech: ['Next.js', 'TypeScript', 'Assessment workflow', 'Reporting'],
-    tone: 'blue',
+    features: [
+      { en: 'Timed exam with rule enforcement', id: 'Ujian berwaktu dengan aturan ketat' },
+      { en: 'Auto & manual correction', id: 'Koreksi otomatis & manual' },
+      { en: 'Score analytics for admins', id: 'Analitik nilai untuk admin' },
+    ],
+    screenshots: shots('Screenshoots exam vocabulary', [
+      ['Homepage.png', 'Homepage'],
+      ['Exam.png', 'Exam'],
+      ['DashboardAdmin.png', 'Admin dashboard'],
+      ['Analitik.png', 'Analytics'],
+      ['ResultsExamAll Admin.png', 'Exam results'],
+    ]),
     status: 'completed',
     link: 'https://exam-vocabulary.pubpasim.org/',
   },
@@ -63,7 +89,21 @@ const projects: Project[] = [
     },
     year: '2026',
     tech: ['Next.js', 'CRUD', 'Admin dashboard', 'Token system'],
-    tone: 'coral',
+    features: [
+      { en: 'Student records & cohorts', id: 'Data mahasiswa & angkatan' },
+      { en: 'Master data management', id: 'Pengelolaan master data' },
+      { en: 'Token-based election', id: 'Pemilihan berbasis token' },
+    ],
+    screenshots: shots('Screenshoots PUB Website', [
+      ['Homepages.png', 'Homepage'],
+      ['ListMahasiswa.png', 'Student list'],
+      ['Detail Mahasiswa.png', 'Student detail'],
+      ['Page Angkatan mahasiswa.png', 'Cohorts'],
+      ['Kepengurusan.png', 'Board'],
+      ['Detail Kepengurusan.png', 'Board detail'],
+      ['Master Data.png', 'Master data'],
+      ['Dashboard Pemilihan ketua PUB.png', 'Election dashboard'],
+    ]),
     status: 'completed',
     link: 'https://new.pubpasim.org/',
   },
@@ -80,10 +120,24 @@ const projects: Project[] = [
     },
     year: '2026',
     tech: ['Next.js', 'TypeScript', 'Responsive UI', 'Single-page'],
-    tone: 'coffee',
+    features: [
+      { en: 'Brand story section', id: 'Section cerita brand' },
+      { en: 'Menu showcase', id: 'Tampilan menu' },
+      { en: 'Responsive single page', id: 'Single page responsif' },
+    ],
+    screenshots: shots('Screenshoots Muladari Coffe', [
+      ['Homepage.png', 'Homepage'],
+      ['Story.png', 'Story'],
+      ['Menu.png', 'Menu'],
+      ['Screenshot (753).png', 'Vibes'],
+      ['Screenshot (754).png', 'Gallery'],
+      ['Screenshot (755).png', 'Events'],
+    ]),
     status: 'completed',
     link: 'https://muladaricoffee.shop/',
   },
 ]
+
+export const findProject = (slug: string) => projects.find((project) => project.id === slug)
 
 export default projects
