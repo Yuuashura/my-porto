@@ -28,12 +28,15 @@ export interface PortfolioContent {
     role: string
     location: string
     title: string
-    titleLines: string[]
+    tagline1: string
+    tagline2: string
+    cardHeading: string
+    ctaHeading: string
+    ctaDescription: string
     introduction: string
     viewWork: string
     downloadCv: string
     availability: string
-    buildingWith: string
   }
   work: {
     heading: string
@@ -42,6 +45,9 @@ export interface PortfolioContent {
     visitLive: string
     viewDetails: string
     carouselLabel: string
+    viewLabel: string
+    viewSlide: string
+    viewGrid: string
     technologiesLabel: string
   }
   experience: {
@@ -82,6 +88,10 @@ export interface PortfolioContent {
     phone: string
     location: string
     locationValue: string
+    marquee: string[]
+    craftedWith: string
+    craftedBy: string
+    backToTop: string
   }
   projectVisuals: {
     bookingFlow: string
@@ -141,13 +151,16 @@ export const content: Record<Language, PortfolioContent> = {
       role: 'Software engineer',
       location: 'Bandung, Indonesia',
       title: 'I engineer software that makes complex work feel simple.',
-      titleLines: ['I engineer', 'software that', 'makes complex', 'work feel simple.'],
+      tagline1: 'I engineer software',
+      tagline2: 'that feels simple.',
+      cardHeading: 'Engineer by trade. Teacher by habit.',
+      ctaHeading: 'Let’s look at the work.',
+      ctaDescription: 'Four projects, from Spring Boot microservices to a coffee shop profile. Keep scrolling or grab the CV.',
       introduction:
         'I’m Yudistira Syaputra, a software engineer and programming instructor building reliable backends, thoughtful interfaces, and products that answer real operational needs.',
       viewWork: 'View selected work',
       downloadCv: 'Download CV',
       availability: 'Open to software engineering roles',
-      buildingWith: 'Building with',
     },
     work: {
       heading: 'Selected work',
@@ -157,6 +170,9 @@ export const content: Record<Language, PortfolioContent> = {
       visitLive: 'Visit live site',
       viewDetails: 'View project details',
       carouselLabel: 'Selected projects',
+      viewLabel: 'Project layout',
+      viewSlide: 'Slide',
+      viewGrid: 'Cards',
       technologiesLabel: 'technologies',
     },
     experience: {
@@ -220,6 +236,10 @@ export const content: Record<Language, PortfolioContent> = {
       phone: 'Phone',
       location: 'Location',
       locationValue: 'Bandung, Indonesia',
+      marquee: ['Java', 'Spring Boot', 'React', 'Next.js', 'TypeScript', 'PostgreSQL', 'Teaching'],
+      craftedWith: 'Crafted with',
+      craftedBy: 'by',
+      backToTop: 'Back to top',
     },
     projectVisuals: {
       bookingFlow: 'Booking flow',
@@ -281,13 +301,16 @@ export const content: Record<Language, PortfolioContent> = {
       role: 'Software engineer',
       location: 'Bandung, Indonesia',
       title: 'Saya merancang software yang membuat hal rumit terasa sederhana.',
-      titleLines: ['Saya merancang', 'software yang', 'membuat hal rumit', 'terasa sederhana.'],
+      tagline1: 'Saya merancang software',
+      tagline2: 'yang terasa sederhana.',
+      cardHeading: 'Engineer karena profesi. Pengajar karena kebiasaan.',
+      ctaHeading: 'Mari lihat karyanya.',
+      ctaDescription: 'Empat proyek, dari microservices Spring Boot sampai profil coffee shop. Lanjut scroll atau unduh CV.',
       introduction:
         'Saya Yudistira Syaputra, software engineer dan instruktur pemrograman yang membangun backend andal, antarmuka yang matang, dan produk yang menjawab kebutuhan operasional nyata.',
       viewWork: 'Lihat proyek pilihan',
       downloadCv: 'Unduh CV',
       availability: 'Terbuka untuk peran software engineer',
-      buildingWith: 'Dibangun dengan',
     },
     work: {
       heading: 'Proyek pilihan',
@@ -297,6 +320,9 @@ export const content: Record<Language, PortfolioContent> = {
       visitLive: 'Kunjungi situs',
       viewDetails: 'Lihat detail proyek',
       carouselLabel: 'Proyek pilihan',
+      viewLabel: 'Tampilan proyek',
+      viewSlide: 'Slide',
+      viewGrid: 'Kartu',
       technologiesLabel: 'teknologi',
     },
     experience: {
@@ -360,6 +386,10 @@ export const content: Record<Language, PortfolioContent> = {
       phone: 'Telepon',
       location: 'Lokasi',
       locationValue: 'Bandung, Indonesia',
+      marquee: ['Java', 'Spring Boot', 'React', 'Next.js', 'TypeScript', 'PostgreSQL', 'Pengajaran'],
+      craftedWith: 'Dibuat dengan',
+      craftedBy: 'oleh',
+      backToTop: 'Kembali ke atas',
     },
     projectVisuals: {
       bookingFlow: 'Alur pemesanan',

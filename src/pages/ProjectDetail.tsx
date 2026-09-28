@@ -207,10 +207,10 @@ function BuildDiagram({
             containerRef={containerRef}
             fromRef={ref}
             toRef={hubRef}
-            pathColor="#17171c"
+            pathColor="#4a4a4a"
             pathOpacity={0.12}
-            gradientStartColor="#ff7759"
-            gradientStopColor="#003c33"
+            gradientStartColor="#e2b4bd"
+            gradientStopColor="#4a4a4a"
             duration={4}
             delay={index * 0.35}
           />
@@ -221,10 +221,10 @@ function BuildDiagram({
             containerRef={containerRef}
             fromRef={hubRef}
             toRef={ref}
-            pathColor="#17171c"
+            pathColor="#4a4a4a"
             pathOpacity={0.12}
-            gradientStartColor="#003c33"
-            gradientStopColor="#2456c4"
+            gradientStartColor="#4a4a4a"
+            gradientStopColor="#e2b4bd"
             duration={4}
             delay={1.2 + index * 0.35}
           />

@@ -4,95 +4,93 @@ interface Particle {
   x: number
   y: number
   size: number
-  speedX: number
-  speedY: number
-  opacity: number
-  hue: number
+  drift: number
+  speed: number
+  phase: number
+  color: string
 }
 
+// Palette at low alpha: mauve, rose, charcoal.
+const colors = ['rgba(226, 180, 189, 0.55)', 'rgba(247, 214, 208, 0.7)', 'rgba(74, 74, 74, 0.14)']
+
+/** Soft dust floating upward. Drawn as a fixed overlay so it shows over the opaque stacked sections. */
 export default function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    const ctx = canvas?.getContext('2d')
+    if (!canvas || !ctx) return
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    let animationId: number
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     let particles: Particle[] = []
-
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
+    let frame = 0
+    let width = 0
+    let height = 0
 
     const init = () => {
-      resize()
-      const count = Math.min(Math.floor((canvas.width * canvas.height) / 6000), 120)
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      width = window.innerWidth
+      height = window.innerHeight
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      const count = width < 780 ? 24 : 45
       particles = Array.from({ length: count }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.3,
-        speedY: (Math.random() - 0.5) * 0.3,
-        opacity: Math.random() * 0.5 + 0.2,
-        hue: Math.random() < 0.4 ? 190 : 45,
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 2 + 1,
+        drift: Math.random() * 12 + 4,
+        speed: Math.random() * 0.25 + 0.08,
+        phase: Math.random() * Math.PI * 2,
+        color: colors[Math.floor(Math.random() * colors.length)],
       }))
     }
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      for (const p of particles) {
-        p.x += p.speedX
-        p.y += p.speedY
-
-        if (p.x < 0) p.x = canvas.width
-        if (p.x > canvas.width) p.x = 0
-        if (p.y < 0) p.y = canvas.height
-        if (p.y > canvas.height) p.y = 0
-
+    const draw = (time: number) => {
+      ctx.clearRect(0, 0, width, height)
+      for (const particle of particles) {
+        const x = particle.x + Math.sin(time / 2400 + particle.phase) * particle.drift
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `hsla(${p.hue}, 70%, 60%, ${p.opacity})`
+        ctx.arc(x, particle.y, particle.size, 0, Math.PI * 2)
+        ctx.fillStyle = particle.color
         ctx.fill()
       }
+    }
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x
-          const dy = particles[i].y - particles[j].y
-          const dist = Math.sqrt(dx * dx + dy * dy)
-
-          if (dist < 120) {
-            ctx.beginPath()
-            ctx.moveTo(particles[i].x, particles[i].y)
-            ctx.lineTo(particles[j].x, particles[j].y)
-            ctx.strokeStyle = `hsla(190, 60%, 70%, ${0.08 * (1 - dist / 120)})`
-            ctx.stroke()
-          }
+    const loop = (time: number) => {
+      for (const particle of particles) {
+        particle.y -= particle.speed
+        if (particle.y < -10) {
+          particle.y = height + 10
+          particle.x = Math.random() * width
         }
       }
+      draw(time)
+      frame = requestAnimationFrame(loop)
+    }
 
-      animationId = requestAnimationFrame(animate)
+    const start = () => {
+      cancelAnimationFrame(frame)
+      if (reduce) draw(0)
+      else if (!document.hidden) frame = requestAnimationFrame(loop)
+    }
+    const onResize = () => {
+      init()
+      start()
     }
 
     init()
-    animate()
-    window.addEventListener('resize', init)
+    start()
+    window.addEventListener('resize', onResize)
+    document.addEventListener('visibilitychange', start)
 
     return () => {
-      cancelAnimationFrame(animationId)
-      window.removeEventListener('resize', init)
+      cancelAnimationFrame(frame)
+      window.removeEventListener('resize', onResize)
+      document.removeEventListener('visibilitychange', start)
     }
   }, [])
 
-  return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-    />
-  )
+  return <canvas ref={canvasRef} className="particle-field" aria-hidden="true" />
 }

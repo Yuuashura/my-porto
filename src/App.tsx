@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import {
   AnimatePresence,
   animate,
@@ -11,14 +11,16 @@ import {
   type Variants,
 } from 'framer-motion'
 import {
-  FiArrowDown,
   FiArrowRight,
   FiArrowUpRight,
+  FiBriefcase,
+  FiCode,
   FiDownload,
   FiGithub,
+  FiGrid,
+  FiLayers,
   FiLinkedin,
   FiMail,
-  FiMapPin,
   FiMenu,
   FiPhone,
   FiX,
@@ -32,9 +34,14 @@ import { ArchitectureVisual } from './components/ArchitectureVisual'
 import { AnimatedBeam } from './components/ui/animated-beam'
 import { CoverflowCarousel } from './components/ui/coverflow-carousel'
 import { IconCloud } from './components/ui/interactive-icon-cloud'
+import { CinematicHero } from './components/ui/cinematic-landing-hero'
+import { CinematicFooter } from './components/ui/motion-footer'
+import { ProjectGrid } from './components/ProjectGrid'
 import { useDesktopMotion, useSmoothScroll } from './hooks/useMotion'
 import { useLanguage } from './hooks/useLanguage'
-import { content, type Language } from './content'
+import { useStackTransitions } from './hooks/useStackTransitions'
+import { ScrollTrigger } from './lib/gsap'
+import { content, type Language, type PortfolioContent } from './content'
 
 const cvUrl = new URL('../JAVA DEVELOPER - YUDISTIRA SYAPUTRA.pdf', import.meta.url).href
 
@@ -88,6 +95,8 @@ const staggerItem: Variants = {
   },
 }
 
+const ease = [0.16, 1, 0.3, 1] as const
+
 const wordItem: Variants = {
   hidden: { y: '105%' },
   visible: {
@@ -106,6 +115,8 @@ function App() {
   const [playIntro] = useState(shouldPlayIntro)
   const [introVisible, setIntroVisible] = useState(playIntro)
   const [activeProject, setActiveProject] = useState(0)
+  const [projectView, setProjectView] = useState<'slide' | 'grid'>('slide')
+  const mainRef = useRef<HTMLElement>(null)
   const experienceRef = useRef<HTMLElement>(null)
   const devTeachRef = useRef<HTMLDivElement>(null)
   const developmentRef = useRef<HTMLSpanElement>(null)
@@ -164,9 +175,28 @@ function App() {
     openGraphDescription?.setAttribute('content', copy.meta.description)
   }, [copy.meta.description, copy.meta.title])
 
-  useLayoutEffect(() => {
+  useStackTransitions(mainRef)
+
+  // Pins change page height, so re-measure whenever layout-affecting state or fonts change.
+  useEffect(() => {
+    ScrollTrigger.refresh()
+  }, [language, projectView])
+
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh()
+    document.fonts.ready.then(refresh)
+    window.addEventListener('load', refresh)
+    return () => window.removeEventListener('load', refresh)
+  }, [])
+
+  // Deep links like /#work (back from a project page): scroll only after pin spacers exist.
+  useEffect(() => {
     if (!window.location.hash) return
-    document.querySelector(window.location.hash)?.scrollIntoView()
+    const frame = requestAnimationFrame(() => {
+      ScrollTrigger.refresh()
+      document.querySelector(window.location.hash)?.scrollIntoView()
+    })
+    return () => cancelAnimationFrame(frame)
   }, [])
 
   const closeMenu = () => setMenuOpen(false)
@@ -174,8 +204,6 @@ function App() {
     setLanguage(nextLanguage)
     setMenuOpen(false)
   }
-  const heroDistance = cinematic ? 68 : 24
-  const heroEase = [0.16, 1, 0.3, 1] as const
   // Hero waits for the intro curtain to start lifting.
   const introDelay = playIntro ? INTRO_HERO_DELAY : 0
 
@@ -254,154 +282,117 @@ function App() {
         </div>
       </header>
 
-      <main id="main-content">
-        <section className="hero" id="top">
-          <div className="hero-copy">
-            <motion.p
-              className="hero-kicker"
-              initial={shouldReduceMotion ? false : { x: -heroDistance * 0.5 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.62, delay: introDelay + 0.06, ease: heroEase }}
-            >
-              {copy.hero.role} <span aria-hidden="true">/</span> {copy.hero.location}
-            </motion.p>
-            <h1 aria-label={copy.hero.title}>
-              {copy.hero.titleLines.map((line, index) => (
-                <span className="hero-title-line" key={line} aria-hidden="true">
-                  <motion.span
-                    initial={shouldReduceMotion ? false : { y: heroDistance, rotate: cinematic ? 1.2 : 0 }}
-                    animate={{ y: 0, rotate: 0 }}
-                    transition={{
-                      duration: cinematic ? 0.78 : 0.52,
-                      delay: introDelay + 0.1 + index * (cinematic ? 0.075 : 0.045),
-                      ease: heroEase,
-                    }}
-                  >
-                    {line}
-                  </motion.span>
-                </span>
-              ))}
-            </h1>
-            <motion.div
-              className="hero-intro"
-              initial={shouldReduceMotion ? false : { y: cinematic ? 34 : 16 }}
-              animate={{ y: 0 }}
-              transition={{ duration: 0.66, delay: introDelay + (cinematic ? 0.42 : 0.24), ease: heroEase }}
-            >
-              <p>{copy.hero.introduction}</p>
-              <div className="hero-actions">
-                <a className="button button--dark" href="#work">
-                  {copy.hero.viewWork}
-                  <FiArrowDown aria-hidden="true" />
-                </a>
-                <a className="text-link" href={cvUrl} download>
-                  <FiDownload aria-hidden="true" />
-                  {copy.hero.downloadCv}
-                </a>
-              </div>
-            </motion.div>
-          </div>
-
-          <motion.div
-            className="hero-portrait"
-            initial={shouldReduceMotion ? false : { scale: cinematic ? 1.075 : 1.025, y: cinematic ? 22 : 10 }}
-            animate={{ scale: 1, y: 0 }}
-            transition={{ duration: cinematic ? 0.86 : 0.54, delay: introDelay + 0.18, ease: heroEase }}
-          >
-            <div className="portrait-image-wrap">
-              <img src="/aku.jpg" alt="Portrait of Yudistira Syaputra" fetchPriority="high" />
-              <span className="portrait-sheen" aria-hidden="true" />
-            </div>
-            <motion.div
-              className="portrait-caption"
-              initial={shouldReduceMotion ? false : { x: cinematic ? -44 : -18 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.58, delay: introDelay + (cinematic ? 0.52 : 0.3), ease: heroEase }}
-            >
-              <span>{copy.hero.availability}</span>
-              <span className="availability-dot" aria-hidden="true" />
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="hero-proof"
-            initial={shouldReduceMotion ? false : { y: cinematic ? 26 : 12 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.58, delay: introDelay + (cinematic ? 0.55 : 0.32), ease: heroEase }}
-          >
-            <p>{copy.hero.buildingWith}</p>
-            <motion.div
-              aria-label="Core technology stack"
-              variants={{
-                hidden: {},
-                visible: { transition: { staggerChildren: 0.07, delayChildren: introDelay + 0.08 } },
-              }}
-              initial={shouldReduceMotion ? false : 'hidden'}
-              animate="visible"
-            >
-              {['Java', 'TypeScript', 'React', 'Next.js', 'PostgreSQL'].map((technology) => (
-                <motion.span key={technology} variants={staggerItem}>
-                  {technology}
-                </motion.span>
-              ))}
-            </motion.div>
-          </motion.div>
+      <main id="main-content" ref={mainRef}>
+        <section id="top" className="hero-stage">
+          <CinematicHero
+            title={copy.hero.title}
+            kicker={
+              <>
+                {copy.hero.role} <span aria-hidden="true">/</span> {copy.hero.location}
+              </>
+            }
+            tagline1={copy.hero.tagline1}
+            tagline2={copy.hero.tagline2}
+            brandName="Yuuashura"
+            cardHeading={copy.hero.cardHeading}
+            cardDescription={copy.hero.introduction}
+            portrait={{ src: '/aku.jpg', alt: 'Portrait of Yudistira Syaputra' }}
+            badges={[
+              { icon: FiBriefcase, title: copy.hero.availability, subtitle: copy.hero.location },
+              { icon: FiCode, title: 'Java · TypeScript · React', subtitle: 'Spring Boot · Next.js · PostgreSQL' },
+            ]}
+            ctaHeading={copy.hero.ctaHeading}
+            ctaDescription={copy.hero.ctaDescription}
+            primaryAction={{ label: copy.hero.viewWork, href: '#work' }}
+            secondaryAction={{ label: copy.hero.downloadCv, href: cvUrl }}
+            introDelay={introDelay}
+          />
         </section>
 
-        <section className="work-section" id="work">
-          <Reveal className="section-heading" amount={0.35}>
-            <h2>{copy.work.heading}</h2>
-            <p>{copy.work.introduction}</p>
-          </Reveal>
+        <div className="stack-panel">
+          <section className="work-section" id="work">
+            <Reveal className="section-heading" amount={0.35}>
+              <h2>{copy.work.heading}</h2>
+              <p>{copy.work.introduction}</p>
+            </Reveal>
 
-          <Reveal variant="scale" amount={0.2}>
-            <CoverflowCarousel
-              slides={slides}
-              label={copy.work.carouselLabel}
-              cardWidth="clamp(260px, 46vw, 640px)"
-              aspectRatio={16 / 10}
-              rotate={38}
-              cardClassName="work-card"
-              showNavigation
-              showPagination
-              onSelect={setActiveProject}
-              onOpen={(index) => window.location.assign(`/projek/${projects[index].id}`)}
-            />
-          </Reveal>
-
-          <div className="work-caption" key={project.id} aria-live="polite">
-            <div className="project-meta">
-              <span>{project.category[language]}</span>
-              <span>{project.year}</span>
+            <div className="view-toggle" role="group" aria-label={copy.work.viewLabel}>
+              <button
+                type="button"
+                aria-pressed={projectView === 'slide'}
+                className={projectView === 'slide' ? 'is-active' : ''}
+                onClick={() => setProjectView('slide')}
+              >
+                <FiLayers aria-hidden="true" />
+                {copy.work.viewSlide}
+              </button>
+              <button
+                type="button"
+                aria-pressed={projectView === 'grid'}
+                className={projectView === 'grid' ? 'is-active' : ''}
+                onClick={() => setProjectView('grid')}
+              >
+                <FiGrid aria-hidden="true" />
+                {copy.work.viewGrid}
+              </button>
             </div>
-            <h3>{project.title}</h3>
-            <p>{project.description[language]}</p>
-            <ul className="project-tech" aria-label={`${project.title} ${copy.work.technologiesLabel}`}>
-              {project.tech.map((technology) => (
-                <li key={technology}>{technology}</li>
-              ))}
-            </ul>
-            <div className="project-actions">
-              <a className="button button--dark" href={`/projek/${project.id}`}>
-                {copy.work.viewDetails}
-                <FiArrowRight aria-hidden="true" />
-              </a>
-              {project.link && (
-                <a className="project-link" href={project.link} target="_blank" rel="noreferrer">
-                  {copy.work.visitLive}
-                  <FiArrowUpRight aria-hidden="true" />
-                </a>
-              )}
-              {project.github && (
-                <a className="project-link" href={project.github} target="_blank" rel="noreferrer">
-                  {copy.work.viewGithub}
-                  <FiArrowUpRight aria-hidden="true" />
-                </a>
-              )}
-            </div>
-          </div>
-        </section>
 
+            {projectView === 'grid' ? (
+              <ProjectGrid projects={projects} copy={copy} language={language} />
+            ) : (
+              <>
+                <Reveal variant="scale" amount={0.2} data-cursor="Drag">
+                  <CoverflowCarousel
+                    slides={slides}
+                    label={copy.work.carouselLabel}
+                    cardWidth="clamp(260px, 46vw, 640px)"
+                    aspectRatio={16 / 10}
+                    rotate={38}
+                    cardClassName="work-card"
+                    showNavigation
+                    showPagination
+                    onSelect={setActiveProject}
+                    onOpen={(index) => window.location.assign(`/projek/${projects[index].id}`)}
+                  />
+                </Reveal>
+
+                <div className="work-caption" key={project.id} aria-live="polite">
+                  <div className="project-meta">
+                    <span>{project.category[language]}</span>
+                    <span>{project.year}</span>
+                  </div>
+                  <h3>{project.title}</h3>
+                  <p>{project.description[language]}</p>
+                  <ul className="project-tech" aria-label={`${project.title} ${copy.work.technologiesLabel}`}>
+                    {project.tech.map((technology) => (
+                      <li key={technology}>{technology}</li>
+                    ))}
+                  </ul>
+                  <div className="project-actions">
+                    <a className="button button--dark" href={`/projek/${project.id}`}>
+                      {copy.work.viewDetails}
+                      <FiArrowRight aria-hidden="true" />
+                    </a>
+                    {project.link && (
+                      <a className="project-link" href={project.link} target="_blank" rel="noreferrer">
+                        {copy.work.visitLive}
+                        <FiArrowUpRight aria-hidden="true" />
+                      </a>
+                    )}
+                    {project.github && (
+                      <a className="project-link" href={project.github} target="_blank" rel="noreferrer">
+                        {copy.work.viewGithub}
+                        <FiArrowUpRight aria-hidden="true" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </>
+            )}
+          </section>
+        </div>
+
+        <div className="stack-panel">
         <section className="experience-section" id="experience" ref={experienceRef}>
           <Reveal className="experience-intro" variant="slide-left" amount={0.22}>
             <div className="dev-teach" ref={devTeachRef} role="img" aria-label={copy.experience.note}>
@@ -416,10 +407,10 @@ function App() {
                 fromRef={developmentRef}
                 toRef={teachingRef}
                 curvature={34}
-                pathColor="#ffffff"
+                pathColor="#fff5f5"
                 pathOpacity={0.18}
-                gradientStartColor="#ff7759"
-                gradientStopColor="#b4e3d7"
+                gradientStartColor="#e2b4bd"
+                gradientStopColor="#f7d6d0"
                 duration={3.4}
               />
               <AnimatedBeam
@@ -428,10 +419,10 @@ function App() {
                 toRef={teachingRef}
                 curvature={-34}
                 reverse
-                pathColor="#ffffff"
+                pathColor="#fff5f5"
                 pathOpacity={0.18}
-                gradientStartColor="#b4e3d7"
-                gradientStopColor="#ff7759"
+                gradientStartColor="#f7d6d0"
+                gradientStopColor="#e2b4bd"
                 duration={3.4}
                 delay={1.7}
               />
@@ -471,30 +462,15 @@ function App() {
             </div>
             <ol className="timeline">
               {copy.experience.items.map((item, index) => (
-                <motion.li
-                  key={`${item.period}-${item.role}`}
-                  style={{ ['--i' as string]: index }}
-                  initial={shouldReduceMotion ? false : { x: cinematic ? 38 : 16 }}
-                  whileInView={shouldReduceMotion ? undefined : { x: 0 }}
-                  viewport={{ once: true, amount: 0.35 }}
-                  transition={{
-                    duration: cinematic ? 0.62 : 0.42,
-                    delay: Math.min(index * 0.07, 0.21),
-                    ease: heroEase,
-                  }}
-                >
-                  <time>{item.period}</time>
-                  <div>
-                    <h3>{item.role}</h3>
-                    <p className="timeline-company">{item.company}</p>
-                    <p>{item.summary}</p>
-                  </div>
-                </motion.li>
+                <TimelineItem key={`${item.period}-${item.role}`} item={item} index={index} />
               ))}
             </ol>
           </div>
         </section>
 
+        </div>
+
+        <div className="stack-panel">
         <section className="about-section" id="about">
           <Reveal className="about-heading" amount={0.3}>
             <h2>{copy.about.heading}</h2>
@@ -518,7 +494,7 @@ function App() {
                   transition={{
                     duration: cinematic ? 0.58 : 0.4,
                     delay: Math.min(index * 0.08, 0.16),
-                    ease: heroEase,
+                    ease,
                   }}
                 >
                   <h3>{group.title}</h3>
@@ -550,66 +526,66 @@ function App() {
           </Reveal>
         </section>
 
-        <section className="contact-section" id="contact">
-          <Reveal className="contact-main" amount={0.35}>
-            <p>{copy.contact.prompt}</p>
-            <h2>{copy.contact.heading}</h2>
-            <a className="button button--light button--large" href="mailto:tzyudistira@gmail.com">
-              {copy.contact.emailAction}
-              <FiArrowUpRight aria-hidden="true" />
-            </a>
-          </Reveal>
+        </div>
 
-          <Reveal className="contact-details" amount={0.3} delay={0.08}>
-            <a href="mailto:tzyudistira@gmail.com">
-              <FiMail aria-hidden="true" />
-              <span>
-                <small>{copy.contact.email}</small>
-                tzyudistira@gmail.com
-              </span>
-            </a>
-            <a href="tel:+6281370040608">
-              <FiPhone aria-hidden="true" />
-              <span>
-                <small>{copy.contact.phone}</small>
-                +62 813 7004 0608
-              </span>
-            </a>
-            <div>
-              <FiMapPin aria-hidden="true" />
-              <span>
-                <small>{copy.contact.location}</small>
-                {copy.contact.locationValue}
-              </span>
-            </div>
-          </Reveal>
-
-          <footer>
-            <p>© {new Date().getFullYear()} Yudistira Syaputra</p>
-            <div>
-              <a
-                href="https://github.com/YuuAshura"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Yudistira on GitHub"
-              >
-                <FiGithub aria-hidden="true" />
-                GitHub
-              </a>
-              <a
-                href="https://www.linkedin.com/in/yudistira-syaputra-b0978b343/"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Yudistira on LinkedIn"
-              >
-                <FiLinkedin aria-hidden="true" />
-                LinkedIn
-              </a>
-            </div>
-          </footer>
-        </section>
+        <CinematicFooter
+          id="contact"
+          marquee={copy.contact.marquee}
+          prompt={copy.contact.prompt}
+          heading={copy.contact.heading}
+          primaryLinks={[
+            { label: copy.contact.emailAction, href: 'mailto:tzyudistira@gmail.com', icon: <FiMail aria-hidden="true" /> },
+            { label: '+62 813 7004 0608', href: 'tel:+6281370040608', icon: <FiPhone aria-hidden="true" /> },
+          ]}
+          secondaryLinks={[
+            { label: 'GitHub', href: 'https://github.com/YuuAshura', external: true, icon: <FiGithub aria-hidden="true" /> },
+            {
+              label: 'LinkedIn',
+              href: 'https://www.linkedin.com/in/yudistira-syaputra-b0978b343/',
+              external: true,
+              icon: <FiLinkedin aria-hidden="true" />,
+            },
+            { label: copy.hero.downloadCv, href: cvUrl, download: true, icon: <FiDownload aria-hidden="true" /> },
+          ]}
+          giantText="YUUASHURA"
+          copyright={`© ${new Date().getFullYear()} Yudistira Syaputra · ${copy.contact.locationValue}`}
+          craftedWith={copy.contact.craftedWith}
+          craftedBy={copy.contact.craftedBy}
+          author="Yuuashura"
+          backToTop={{ label: copy.contact.backToTop, href: '#top' }}
+        />
       </main>
     </div>
+  )
+}
+
+/** Experience row that rolls through 3D like a drum as it crosses the viewport. */
+function TimelineItem({
+  item,
+  index,
+}: {
+  item: PortfolioContent['experience']['items'][number]
+  index: number
+}) {
+  const ref = useRef<HTMLLIElement>(null)
+  const shouldReduceMotion = useReducedMotion()
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const rotateX = useTransform(scrollYProgress, [0, 0.42, 0.58, 1], [40, 0, 0, -40])
+  const scale = useTransform(scrollYProgress, [0, 0.42, 0.58, 1], [0.86, 1, 1, 0.86])
+  const z = useTransform(scrollYProgress, [0, 0.42, 0.58, 1], [-120, 0, 0, -120])
+
+  return (
+    <motion.li
+      ref={ref}
+      style={shouldReduceMotion ? { ['--i' as string]: index } : { rotateX, scale, z, ['--i' as string]: index }}
+    >
+      <time>{item.period}</time>
+      <div>
+        <h3>{item.role}</h3>
+        <p className="timeline-company">{item.company}</p>
+        <p>{item.summary}</p>
+      </div>
+    </motion.li>
   )
 }
 
